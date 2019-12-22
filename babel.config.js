@@ -8,7 +8,9 @@ module.exports = function (api) {
 
     presets.push('@babel/preset-react');
 
-    const plugins = [];
+    const plugins = [
+        '@babel/plugin-proposal-class-properties'
+    ];
 
     api.cache(false);
 

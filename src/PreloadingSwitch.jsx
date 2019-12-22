@@ -2,8 +2,9 @@ import React, { useState, useContext, useEffect, useMemo, Suspense, Fragment } f
 import { matchPath, __RouterContext as RouterContext, useLocation } from 'react-router';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
+import DefaultLoadingScreen from './DefaultLoadingScreen';
 
-const PreloadingSwitchLogic = ({ children, ...context }) => {
+const PreloadingSwitchLogic = ({ children, loadingScreen, ...context }) => {
     const loadingContext = useContext(LoadingContext);
     const isLoading = useContext(LoadingGetterContext);
     const location = useLocation();
@@ -24,25 +25,24 @@ const PreloadingSwitchLogic = ({ children, ...context }) => {
             }
         });
 
-        return match
-            ? {
-                location,
-                context,
-                preload,
-                component: React.cloneElement(element, { location, computedMatch: match })
-            }
-            : {
-                location,
-                context,
-                preload: false,
-                component: null
-            };
+        return {
+            location,
+            context,
+            preload: match ? preload : false,
+            component: match ? React.cloneElement(element, { location, computedMatch: match }) : null
+        }
     };
 
     const [currentRoute, setCurrentRoute] = useState(() => {
         const firstRoute = findMatchRoute(location);
         return firstRoute.preload
-            ? findMatchRoute({ pathname: '/loading' })
+            ? {
+                location: "loading",
+                context,
+                component: loadingScreen
+                    ? <loadingScreen location={location} />
+                    : <DefaultLoadingScreen location={location} />
+            }
             : firstRoute;
     });
     const [nextRoute, setNextRoute] = useState(currentRoute);
@@ -90,12 +90,12 @@ const PreloadingSwitchLogic = ({ children, ...context }) => {
     </Fragment>, [currentRoute, nextRoute]);
 };
 
-const PreloadingSwitch = ({ children }) =>
+const PreloadingSwitch = ({ children, loadingScreen }) =>
     <LoadingMiddleware>
         <RouterContext.Consumer>
             {
                 context =>
-                    <PreloadingSwitchLogic {...context}>
+                    <PreloadingSwitchLogic {...context} loadingScreen={loadingScreen}>
                         {children}
                     </PreloadingSwitchLogic>
             }

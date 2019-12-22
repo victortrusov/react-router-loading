@@ -1,57 +1,41 @@
-import React, { Fragment, useEffect, useState, useContext } from 'react';
+import React, { Fragment, useContext, useMemo } from 'react';
 import { Route, Link } from 'react-router-dom';
 import { LoadingContext, PreloadingSwitch } from "../../dist";
+import { Main, Page1, Page2Wrapper } from './Pages';
 
 const Layout = ({ children }) =>
     <Fragment>
-        <Link to='/page1'>Page 1</Link>
-        <Link to='/page2'>Page 2</Link>
+        <div style={{ display: "flex", flexFlow: "column" }} >
+            <Link to='/'>Main</Link>
+            <Link to='/page1'>Page 1</Link>
+            <Link to='/page2'>Page 2 - classic component</Link>
+            <br />
+            <Link to='/page1WithoutPreload'>Page 1 without preload</Link>
+        </div>
         <article>
             {children}
         </article>
     </Fragment>;
 
-const Page1 = () => {
-    const [state, setState] = useState();
-    const loadingContext = useContext(LoadingContext);
-    const loading = async () => {
-        loadingContext.start();
-        await new Promise(r => setTimeout(r, 1000));
-        setState('Page1');
-        loadingContext.done();
-    };
 
-    useEffect(() => { loading() }, []);
+const App = () => {
 
-    return <div>
-        {state}
-    </div>;
-};
 
-const Page2 = () => {
-    const [state, setState] = useState();
-    const loadingContext = useContext(LoadingContext);
-    const loading = async () => {
-        loadingContext.start();
-        await new Promise(r => setTimeout(r, 1000));
-        setState('Page2');
-        loadingContext.done();
-    };
+    return (
+        <Layout>
+            <PreloadingSwitch>
+                {/* func component with state */}
+                <Route path='/page1' component={Page1} preload />
 
-    useEffect(() => { loading() }, []);
+                <Route path='/page1WithoutPreload' component={Page1} />
 
-    return <div>
-        {state}
-    </div>;
-};
+                {/* classic component: have to pass loadingContext in it */}
+                <Route path='/page2' component={Page2Wrapper} preload />
 
-const App = () =>
-    <Layout>
-        <PreloadingSwitch>
-            <Route path='/loading' />
-            <Route path='/page1' component={Page1} preload />
-            <Route path='/page2' component={Page2} preload />
-            <Route path='/' />
-        </PreloadingSwitch>
-    </Layout>;
+                {/* func component with state */}
+                <Route path='/' component={Main} preload />
+            </PreloadingSwitch>
+        </Layout>
+    );
+}
 export default App;
