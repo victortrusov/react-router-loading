@@ -3,6 +3,8 @@ Custom react router switch with [topbar](https://github.com/buunguyen/topbar) fo
 
 ![](example.gif)
 
+[DEMO](https://codesandbox.io/s/react-easy-preload-demo-sguvm)
+
 ## Requirements
 ```js
 "react": "^16.8.0",
