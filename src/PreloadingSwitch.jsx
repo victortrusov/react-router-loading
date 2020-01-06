@@ -35,6 +35,7 @@ const PreloadingSwitchLogic = ({ children, loadingScreen, ...context }) => {
 
     const [currentRoute, setCurrentRoute] = useState(() => {
         const firstRoute = findMatchRoute(location);
+        //if first page uses preload then show loading screen
         return firstRoute.preload
             ? {
                 location: "loading",
@@ -47,9 +48,11 @@ const PreloadingSwitchLogic = ({ children, loadingScreen, ...context }) => {
     });
     const [nextRoute, setNextRoute] = useState(currentRoute);
 
+    //when location changed
     useEffect(() => {
         let route = findMatchRoute(location);
 
+        //if not the same route mount it to start loading
         if (route.location.pathname !== nextRoute.location.pathname) {
             setNextRoute(route);
             if (!route.preload) {
@@ -59,17 +62,22 @@ const PreloadingSwitchLogic = ({ children, loadingScreen, ...context }) => {
                 if (!isLoading) { loadingContext.start(); } else { loadingContext.skip(); }
             }
         }
+
+        //if same as current route stop loading
         if (route.location.pathname === currentRoute.location.pathname) {
             loadingContext.done();
             if (route.location.search !== currentRoute.location.search) { setCurrentRoute(route); }
         }
     }, [location]);
 
+    //when loading ends
     useEffect(() => {
         if (!isLoading && nextRoute.location.pathname !== currentRoute.location.pathname) { setCurrentRoute(nextRoute); }
     }, [isLoading]);
 
+    //memo and current and next components
     return useMemo(() => <Fragment>
+        {/* current */}
         <div key={currentRoute.location.pathname}>
             <RouterContext.Provider value={currentRoute.context}>
                 <Suspense fallback={null}>
@@ -77,6 +85,7 @@ const PreloadingSwitchLogic = ({ children, loadingScreen, ...context }) => {
                 </Suspense>
             </RouterContext.Provider>
         </div>
+        {/* hidden next */}
         {
             nextRoute.location.pathname !== currentRoute.location.pathname &&
             <div key={nextRoute.location.pathname} style={{ display: 'none' }}>
@@ -90,6 +99,7 @@ const PreloadingSwitchLogic = ({ children, loadingScreen, ...context }) => {
     </Fragment>, [currentRoute, nextRoute]);
 };
 
+//combine topbar and switch
 const PreloadingSwitch = ({ children, loadingScreen }) =>
     <LoadingMiddleware>
         <RouterContext.Consumer>
