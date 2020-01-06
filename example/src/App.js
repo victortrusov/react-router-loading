@@ -30,7 +30,6 @@ const Layout = ({ children }) =>
         </article>
     </Fragment>;
 
-
 const App = () =>
     <Layout>
         {/* using PreloadingSwitch to do preload */}
@@ -41,7 +40,7 @@ const App = () =>
             {/* same component but with preload off */}
             <Route path='/page1WithoutPreload' component={Page1} />
 
-            {/* classic component: have to pass loadingContext in it */}
+            {/* class component: have to pass loadingContext in it */}
             <Route path='/page2' component={Page2} preload />
 
             <Route path='/' component={Main} preload />

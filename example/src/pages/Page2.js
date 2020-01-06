@@ -2,7 +2,7 @@ import React from 'react';
 import { LoadingContext } from "../../../dist";
 import loadData from './fetchers';
 
-//example with classic react component
+//example with class react component
 class Page2Component extends React.Component {
     state = { data: undefined }
 
@@ -22,14 +22,14 @@ class Page2Component extends React.Component {
     render() {
         return (
             <div>
-                <h1>This is page 2 - classic component</h1>
+                <h1>This is page 2 - class component</h1>
                 {this.state.data ? "Loading done!" : "loading..."}
             </div>
         );
     }
 };
 
-//we should wrap classic component with Context Provider to get access to loading methods
+//we should wrap class component with Context Provider to get access to loading methods
 export const Page2 = (props) =>
     <LoadingContext.Consumer>
         {loadingContext => <Page2Component loadingContext={loadingContext} {...props} />}

@@ -4,7 +4,7 @@ import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
 import DefaultLoadingScreen from './DefaultLoadingScreen';
 
-const PreloadingSwitchLogic = ({ children, loadingScreen, ...context }) => {
+const PreloadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...context }) => {
     const loadingContext = useContext(LoadingContext);
     const isLoading = useContext(LoadingGetterContext);
     const location = useLocation();
@@ -40,8 +40,8 @@ const PreloadingSwitchLogic = ({ children, loadingScreen, ...context }) => {
             ? {
                 location: "loading",
                 context,
-                component: loadingScreen
-                    ? <loadingScreen location={location} />
+                component: LoadingScreen
+                    ? <LoadingScreen location={location} />
                     : <DefaultLoadingScreen location={location} />
             }
             : firstRoute;
