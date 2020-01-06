@@ -4,7 +4,7 @@ Custom react router switch with [topbar](https://github.com/buunguyen/topbar) fo
 ![](example.gif)
 
 ## Requirements
-```
+```js
 "react": "^16.8.0",
 "react-dom": "^16.8.0",
 "react-router-dom": "^5.0.0"
@@ -21,7 +21,7 @@ yarn add react-easy-preload
 ## Usage
 
 In your router section change react-router-dom's `Switch` to `PreloadingSwitch`
-```
+```js
 import { PreloadingSwitch } from "react-easy-preload";
 
 <PreloadingSwitch>
@@ -32,7 +32,7 @@ import { PreloadingSwitch } from "react-easy-preload";
 ```
 
 Add `preload` prop to every route that must be loaded before switching
-```
+```js
 <PreloadingSwitch>
     //data will be loaded before switching
     <Route preload />
@@ -44,7 +44,7 @@ Add `preload` prop to every route that must be loaded before switching
 ```
 
 Add `loadingContext.done()` at the end of your initial loading method in pages that uses in routes you marked with `preload` prop
-```
+```js
 import { LoadingContext } from "react-easy-preload";
 const loadingContext = useContext(LoadingContext);
 
@@ -56,7 +56,7 @@ const loading = async () => {
 };
 ```
 or for class components
-```
+```js
 import { LoadingContext } from "react-easy-preload";
 
 class ClassComponent extends React.Component {
@@ -81,7 +81,7 @@ const ClassComponentWrapper = (props) =>
 ## Config
 
 You can specify loading screen that would be shown at first loading of your app
-```
+```js
 const MyLoadingScreen = () => <div>Loading...</div>
 
 <PreloadingSwitch loadingScreen={MyLoadingScreen}>
@@ -90,7 +90,7 @@ const MyLoadingScreen = () => <div>Loading...</div>
 ```
 
 Call `topbar.config()` if you want to change topbar configuration. More info http://buunguyen.github.io/topbar/.
-```
+```js
 import { topbar } from "react-easy-preload";
 
 topbar.config({
