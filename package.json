@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "prepublish": "cross-env NODE_ENV=production babel ./src --out-dir ./dist -s inline",
         "build": "babel ./src --out-dir ./dist -s inline && babel ./example/src --out-dir ./example/dist -s inline && npm run webpack",
-        "webpack": "webpack ./example/dist/index.js -o ./example/dist/pack.js --mode='development' --devtool source-map",
+        "webpack": "webpack ./example/dist/index.js -o ./example/dist --mode='development' --devtool source-map",
         "example": "http-server-spa ./example"
     },
     "repository": {

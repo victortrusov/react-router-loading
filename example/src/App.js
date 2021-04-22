@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { Route, Link } from 'react-router-dom';
-import { PreloadingSwitch, topbar } from "../../dist";
+import { Link } from 'react-router-dom';
+import { PreloadingSwitch, topbar, Route } from "../../dist";
 import { Main } from "./pages/Main";
 import { Page1 } from "./pages/Page1";
 import { Page2 } from './pages/Page2';
