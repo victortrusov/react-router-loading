@@ -1,4 +1,7 @@
 # react-easy-preload
+
+[![npm version](https://badge.fury.io/js/react-easy-preload.svg)](https://badge.fury.io/js/react-easy-preload)
+
 Custom react router switch with [topbar](https://github.com/buunguyen/topbar) for easy data preloading
 
 ![](example.gif)
@@ -7,8 +10,8 @@ Custom react router switch with [topbar](https://github.com/buunguyen/topbar) fo
 
 ## Requirements
 ```js
-"react": "^16.8.0",
-"react-dom": "^16.8.0",
+"react": "^16.8.0 || ^17.0.0",
+"react-dom": "^16.8.0 || ^17.0.0",
 "react-router-dom": "^5.0.0"
 ```
 
@@ -24,7 +27,7 @@ yarn add react-easy-preload
 
 In your router section change react-router-dom's `Switch` to `PreloadingSwitch`
 ```js
-import { PreloadingSwitch } from "react-easy-preload";
+import { PreloadingSwitch, Route } from "react-easy-preload";
 
 <PreloadingSwitch>
     <Route />
@@ -80,6 +83,22 @@ const ClassComponentWrapper = (props) =>
 
 ```
 
+## Typescript
+
+If you are using typescript to add `preload` prop to routes just import `Route` from this package instead of `react-router-dom`
+```js
+import { PreloadingSwitch, Route } from "react-easy-preload";
+
+<PreloadingSwitch>
+    //data will be loaded before switching
+    <Route preload />
+
+    //instant switch as before
+    <Route />
+    ...
+</PreloadingSwitch>
+```
+
 ## Config
 
 You can specify loading screen that would be shown at first loading of your app
@@ -104,6 +123,13 @@ topbar.config({
     shadowBlur: 0
 });
 ```
+## Example
+
+Clone repository and run
+```
+yarn build && yarn example
+```
+
 ## License
 
 [MIT](./LICENSE)
