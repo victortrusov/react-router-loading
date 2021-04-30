@@ -1,7 +1,9 @@
 # react-easy-preload
 
-[![npm version](https://badge.fury.io/js/react-easy-preload.svg)](https://badge.fury.io/js/react-easy-preload)
-
+<span style="color:red">Attention</span>
+## Project renamed to [react-router-loading](https://www.npmjs.com/package/react-router-loading)
+<span style="color:red">You can find new releases there</span>  
+\
 Custom react router switch with [topbar](https://github.com/buunguyen/topbar) for easy data preloading
 
 ![](example.gif)
