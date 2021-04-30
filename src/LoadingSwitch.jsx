@@ -10,7 +10,7 @@ const LoadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...context
     const location = useLocation();
 
     const findMatchRoute = (location) => {
-        let element, match, preload;
+        let element, match, loading;
 
         // We use React.Children.forEach instead of React.Children.toArray().find()
         // here because toArray adds keys to all child elements and we do not want
@@ -19,7 +19,7 @@ const LoadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...context
         React.Children.forEach(children, child => {
             if (match == null && React.isValidElement(child)) {
                 element = child;
-                preload = child.props.preload;
+                loading = child.props.loading;
                 const path = child.props.path || child.props.from;
                 match = matchPath(location.pathname, { ...child.props, path });
             }
@@ -28,15 +28,15 @@ const LoadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...context
         return {
             location,
             context,
-            preload: match ? preload : false,
+            loading: match ? loading : false,
             component: match ? React.cloneElement(element, { location, computedMatch: match }) : null
         }
     };
 
     const [currentRoute, setCurrentRoute] = useState(() => {
         const firstRoute = findMatchRoute(location);
-        //if first page uses preload then show loading screen
-        return firstRoute.preload
+        //if first page uses loading then show loading screen
+        return firstRoute.loading
             ? {
                 location: "loading",
                 context,
@@ -55,7 +55,7 @@ const LoadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...context
         //if not the same route mount it to start loading
         if (route.location.pathname !== nextRoute.location.pathname) {
             setNextRoute(route);
-            if (!route.preload) {
+            if (!route.loading) {
                 loadingContext.done();
                 setCurrentRoute(route);
             } else {

@@ -32,18 +32,18 @@ const Layout = ({ children }) =>
 
 const App = () =>
     <Layout>
-        {/* using Switch from react-router-loading to do preload */}
+        {/* using Switch from react-router-loading */}
         <Switch>
             {/* func component with state */}
-            <Route path='/page1' component={Page1} preload />
+            <Route path='/page1' component={Page1} loading />
 
-            {/* same component but with preload off */}
+            {/* same component but without loading prop */}
             <Route path='/page1WithoutLoading' component={Page1} />
 
             {/* class component: have to pass loadingContext in it */}
-            <Route path='/page2' component={Page2} preload />
+            <Route path='/page2' component={Page2} loading />
 
-            <Route path='/' component={Main} preload />
+            <Route path='/' component={Main} loading />
         </Switch>
     </Layout>
 

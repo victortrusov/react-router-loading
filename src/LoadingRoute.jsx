@@ -11,7 +11,7 @@ const LoadingRoute = ({
     exact,
     sensitive,
     strict,
-    preload
+    loading
 }) =>
     <Route
         location={location}

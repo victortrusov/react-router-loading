@@ -36,11 +36,11 @@ import { Switch, Route } from "react-router-loading";
 </Switch>
 ```
 
-Add `preload` prop to every route that must be loaded before switching
+Add `loading` prop to every route that must be loaded before switching
 ```js
 <Switch>
     //data will be loaded before switching
-    <Route preload />
+    <Route loading />
 
     //instant switch as before
     <Route />
@@ -48,7 +48,7 @@ Add `preload` prop to every route that must be loaded before switching
 </Switch>
 ```
 
-Add `loadingContext.done()` at the end of your initial loading method in pages that uses in routes you marked with `preload` prop
+Add `loadingContext.done()` at the end of your initial loading method in pages that uses in routes you marked with `loading` prop
 ```js
 import { LoadingContext } from "react-router-loading";
 const loadingContext = useContext(LoadingContext);
@@ -85,13 +85,13 @@ const ClassComponentWrapper = (props) =>
 
 ## Typescript
 
-If you are using typescript to add `preload` prop to routes just import `Route` from this package instead of `react-router-dom`
+If you are using typescript to add `loading` prop to routes just import `Route` from this package instead of `react-router-dom`
 ```js
 import { Switch, Route } from "react-router-loading";
 
 <Switch>
     //data will be loaded before switching
-    <Route preload />
+    <Route loading />
 
     //instant switch as before
     <Route />
@@ -127,7 +127,7 @@ topbar.config({
 
 Clone repository and run
 ```
-yarn build && yarn example
+yarn build && yarn start
 ```
 
 ## License
