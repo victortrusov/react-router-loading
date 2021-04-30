@@ -1,11 +1,9 @@
-# react-easy-preload
+# react-router-loading
 
-<span style="color:red">Attention</span>
-## Project renamed to [react-router-loading](https://www.npmjs.com/package/react-router-loading)
-<span style="color:red">You can find new releases there</span>  
+[![npm version](https://badge.fury.io/js/react-router-loading.svg)](https://badge.fury.io/js/react-router-loading)
+
+### Custom react router switch that allows you to load data before switching the screen
 \
-Custom react router switch with [topbar](https://github.com/buunguyen/topbar) for easy data preloading
-
 ![](example.gif)
 
 [DEMO](https://codesandbox.io/s/react-easy-preload-demo-sguvm)
@@ -20,39 +18,39 @@ Custom react router switch with [topbar](https://github.com/buunguyen/topbar) fo
 ## Installation
 
 ```console
-npm install react-easy-preload
+npm install react-router-loading
 ## or
-yarn add react-easy-preload
+yarn add react-router-loading
 ```
 
 ## Usage
 
-In your router section change react-router-dom's `Switch` to `PreloadingSwitch`
+In your router section import `Switch` and `Route` from `react-router-loading` instead of `react-router-dom`
 ```js
-import { PreloadingSwitch, Route } from "react-easy-preload";
+import { Switch, Route } from "react-router-loading";
 
-<PreloadingSwitch>
+<Switch>
     <Route />
     <Route />
     ...
-</PreloadingSwitch>
+</Switch>
 ```
 
 Add `preload` prop to every route that must be loaded before switching
 ```js
-<PreloadingSwitch>
+<Switch>
     //data will be loaded before switching
     <Route preload />
 
     //instant switch as before
     <Route />
     ...
-</PreloadingSwitch>
+</Switch>
 ```
 
 Add `loadingContext.done()` at the end of your initial loading method in pages that uses in routes you marked with `preload` prop
 ```js
-import { LoadingContext } from "react-easy-preload";
+import { LoadingContext } from "react-router-loading";
 const loadingContext = useContext(LoadingContext);
 
 const loading = async () => {
@@ -64,7 +62,7 @@ const loading = async () => {
 ```
 or for class components
 ```js
-import { LoadingContext } from "react-easy-preload";
+import { LoadingContext } from "react-router-loading";
 
 class ClassComponent extends React.Component {
     ...
@@ -89,16 +87,16 @@ const ClassComponentWrapper = (props) =>
 
 If you are using typescript to add `preload` prop to routes just import `Route` from this package instead of `react-router-dom`
 ```js
-import { PreloadingSwitch, Route } from "react-easy-preload";
+import { Switch, Route } from "react-router-loading";
 
-<PreloadingSwitch>
+<Switch>
     //data will be loaded before switching
     <Route preload />
 
     //instant switch as before
     <Route />
     ...
-</PreloadingSwitch>
+</Switch>
 ```
 
 ## Config
@@ -107,14 +105,14 @@ You can specify loading screen that would be shown at first loading of your app
 ```js
 const MyLoadingScreen = () => <div>Loading...</div>
 
-<PreloadingSwitch loadingScreen={MyLoadingScreen}>
+<Switch loadingScreen={MyLoadingScreen}>
 ...
-</PreloadingSwitch>
+</Switch>
 ```
 
 Call `topbar.config()` if you want to change topbar configuration. More info http://buunguyen.github.io/topbar/.
 ```js
-import { topbar } from "react-easy-preload";
+import { topbar } from "react-router-loading";
 
 topbar.config({
     barColors: {

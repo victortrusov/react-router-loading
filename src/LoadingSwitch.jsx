@@ -4,7 +4,7 @@ import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
 import DefaultLoadingScreen from './DefaultLoadingScreen';
 
-const PreloadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...context }) => {
+const LoadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...context }) => {
     const loadingContext = useContext(LoadingContext);
     const isLoading = useContext(LoadingGetterContext);
     const location = useLocation();
@@ -100,16 +100,16 @@ const PreloadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...cont
 };
 
 //combine topbar and switch
-const PreloadingSwitch = ({ children, loadingScreen }) =>
+const LoadingSwitch = ({ children, loadingScreen }) =>
     <LoadingMiddleware>
         <RouterContext.Consumer>
             {
                 context =>
-                    <PreloadingSwitchLogic {...context} loadingScreen={loadingScreen}>
+                    <LoadingSwitchLogic {...context} loadingScreen={loadingScreen}>
                         {children}
-                    </PreloadingSwitchLogic>
+                    </LoadingSwitchLogic>
             }
         </RouterContext.Consumer>
     </LoadingMiddleware>;
 
-export default PreloadingSwitch;
+export default LoadingSwitch;

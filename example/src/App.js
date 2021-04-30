@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { PreloadingSwitch, topbar, Route } from "../../dist";
+import { Switch, Route, topbar } from "../../dist";
 import { Main } from "./pages/Main";
 import { Page1 } from "./pages/Page1";
 import { Page2 } from './pages/Page2';
@@ -22,7 +22,7 @@ const Layout = ({ children }) =>
             <Link to='/page1'>Page 1</Link>
             <Link to='/page2'>Page 2</Link>
             <br />
-            <Link to='/page1WithoutPreload'>Page 1 without preload</Link>
+            <Link to='/page1WithoutLoading'>Page 1 without loading</Link>
         </div>
         <hr />
         <article>
@@ -32,19 +32,19 @@ const Layout = ({ children }) =>
 
 const App = () =>
     <Layout>
-        {/* using PreloadingSwitch to do preload */}
-        <PreloadingSwitch>
+        {/* using Switch from react-router-loading to do preload */}
+        <Switch>
             {/* func component with state */}
             <Route path='/page1' component={Page1} preload />
 
             {/* same component but with preload off */}
-            <Route path='/page1WithoutPreload' component={Page1} />
+            <Route path='/page1WithoutLoading' component={Page1} />
 
             {/* class component: have to pass loadingContext in it */}
             <Route path='/page2' component={Page2} preload />
 
             <Route path='/' component={Main} preload />
-        </PreloadingSwitch>
+        </Switch>
     </Layout>
 
 export default App;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router';
 
 //Route for typescript
-const PreloadingRoute = ({
+const LoadingRoute = ({
     location,
     component,
     render,
@@ -24,4 +24,4 @@ const PreloadingRoute = ({
         strict={strict}
     />;
 
-export default PreloadingRoute;
+export default LoadingRoute;

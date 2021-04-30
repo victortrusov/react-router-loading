@@ -1,6 +1,6 @@
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
-import PreloadingSwitch from './PreloadingSwitch';
-import Route from './PreloadingRoute';
+import Switch from './LoadingSwitch';
+import Route from './LoadingRoute';
 
 const topbar =
     typeof window === 'undefined'
@@ -15,6 +15,6 @@ export {
     topbar,
     LoadingContext,
     LoadingGetterContext,
-    PreloadingSwitch,
+    Switch,
     Route
 };
