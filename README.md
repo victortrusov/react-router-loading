@@ -1,12 +1,13 @@
 # react-router-loading
 
+### Custom react router switch that allows you to load data before switching the screen
+\
 [![npm version](https://badge.fury.io/js/react-router-loading.svg)](https://badge.fury.io/js/react-router-loading)
 
-### Custom react router switch that allows you to load data before switching the screen
 \
 ![](example.gif)
 
-[DEMO](https://codesandbox.io/s/react-easy-preload-demo-sguvm)
+[DEMO](https://codesandbox.io/s/react-router-loading-demo-sguvm)
 
 ## Requirements
 ```js
@@ -81,22 +82,6 @@ const ClassComponentWrapper = (props) =>
         {loadingContext => <ClassComponent loadingContext={loadingContext} {...props} />}
     </LoadingContext.Consumer>
 
-```
-
-## Typescript
-
-If you are using typescript to add `loading` prop to routes just import `Route` from this package instead of `react-router-dom`
-```js
-import { Switch, Route } from "react-router-loading";
-
-<Switch>
-    //data will be loaded before switching
-    <Route loading />
-
-    //instant switch as before
-    <Route />
-    ...
-</Switch>
 ```
 
 ## Config
