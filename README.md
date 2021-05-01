@@ -7,7 +7,7 @@
 \
 ![](example.gif)
 
-[DEMO](https://codesandbox.io/s/react-router-loading-demo-sguvm)
+<a href="https://codesandbox.io/s/react-router-loading-demo-sguvm" target="_blank">DEMO</a>
 
 ## Requirements
 ```js
@@ -95,7 +95,7 @@ const MyLoadingScreen = () => <div>Loading...</div>
 </Switch>
 ```
 
-Call `topbar.config()` if you want to change topbar configuration. More info http://buunguyen.github.io/topbar/.
+Call `topbar.config()` if you want to change topbar configuration. More info <a href="http://buunguyen.github.io/topbar/" target="_blank">here</a>.
 ```js
 import { topbar } from "react-router-loading";
 
