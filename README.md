@@ -1,6 +1,6 @@
 # react-router-loading
 
-### Custom react router switch that allows you to load data before switching the screen
+Custom react router switch that allows you to load data before switching the screen\
 \
 [![npm version](https://badge.fury.io/js/react-router-loading.svg)](https://badge.fury.io/js/react-router-loading)
 
