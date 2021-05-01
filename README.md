@@ -16,6 +16,8 @@ Custom react router switch that allows you to load data before switching the scr
 "react-router-dom": "^5.0.0"
 ```
 
+This package uses `react-router-dom` as main router so you should implement it in your project first.
+
 ## Installation
 
 ```console
@@ -31,8 +33,8 @@ In your router section import `Switch` and `Route` from `react-router-loading` i
 import { Switch, Route } from "react-router-loading";
 
 <Switch>
-    <Route />
-    <Route />
+    <Route path="/page1" component={Page1} />
+    <Route path="/page2" component={Page2} />
     ...
 </Switch>
 ```
@@ -41,15 +43,15 @@ Add `loading` prop to every route that must be loaded before switching
 ```js
 <Switch>
     //data will be loaded before switching
-    <Route loading />
+    <Route path="/page1" component={Page1} loading />
 
     //instant switch as before
-    <Route />
+    <Route path="/page2" component={Page2} />
     ...
 </Switch>
 ```
 
-Add `loadingContext.done()` at the end of your initial loading method in pages that uses in routes you marked with `loading` prop
+Add `loadingContext.done()` at the end of your initial loading method in components that mentioned in routes with `loading` prop (in this case it's `Page1`)
 ```js
 import { LoadingContext } from "react-router-loading";
 const loadingContext = useContext(LoadingContext);
@@ -108,7 +110,7 @@ topbar.config({
     shadowBlur: 0
 });
 ```
-## Example
+## How to run example on localhost
 
 Clone repository and run
 ```
