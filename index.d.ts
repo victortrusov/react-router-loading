@@ -1,7 +1,7 @@
 declare module "react-router-loading" {
-    import type { RouteProps as RP } from "react-router-dom";
+    import type { RouteProps } from "react-router-dom";
     // React router is a dependency of react-router-dom
-    import type { OmitNative, RouteProps } from "react-router";
+    import type { OmitNative } from "react-router";
 
     export class Route<
         T extends {} = {},
