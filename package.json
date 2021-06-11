@@ -3,6 +3,7 @@
     "version": "0.2.1",
     "description": "Custom react router switch that allows you to load data before switching the screen",
     "main": "dist/index.js",
+    "types": "index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "prepublish": "cross-env NODE_ENV=production babel ./src --out-dir ./dist -s inline",
