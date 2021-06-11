@@ -15,7 +15,8 @@
         "url": "git+https://github.com/victortrusov/react-router-loading.git"
     },
     "files": [
-        "dist/*"
+        "dist/*",
+        "index.d.ts"
     ],
     "keywords": [
         "react",
