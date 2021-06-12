@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { LoadingContext } from "../../../dist";
+import { LoadingContext } from '../../../dist';
 import loadData from './fetchers';
 
 export const Main = () => {
@@ -7,11 +7,11 @@ export const Main = () => {
     const loadingContext = useContext(LoadingContext);
 
     const loading = async () => {
-        //loading some data
+        // loading some data
         const data = await loadData();
         setState(data);
 
-        //call method to indicate that loading is done
+        // call method to indicate that loading is done
         loadingContext.done();
     };
 
@@ -21,6 +21,6 @@ export const Main = () => {
 
     return <div>
         <h1>This is main page</h1>
-        {state ? "Loading done!" : "loading..."}
+        {state ? 'Loading done!' : 'loading...'}
     </div>;
 };

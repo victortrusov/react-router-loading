@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router';
 
-//Route for typescript
+// Route for typescript
 const LoadingRoute = ({
     location,
     component,
@@ -17,11 +17,12 @@ const LoadingRoute = ({
         location={location}
         component={component}
         render={render}
-        children={children}
         path={path}
         exact={exact}
         sensitive={sensitive}
         strict={strict}
-    />;
+    >
+        {children}
+    </Route>;
 
 export default LoadingRoute;

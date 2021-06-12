@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Switch, Route, topbar } from "../../dist";
-import { Main } from "./pages/Main";
-import { Page1 } from "./pages/Page1";
+import { Switch, Route, topbar } from '../../dist';
+import { Main } from './pages/Main';
+import { Page1 } from './pages/Page1';
 import { Page2 } from './pages/Page2';
 
-//config topbar
+// config topbar
 topbar.config({
     barColors: {
         '0': 'rgba(26,  188, 156, .7)',
@@ -13,11 +13,11 @@ topbar.config({
         '1.0': 'rgba(231, 76,  60,  .7)'
     },
     shadowBlur: 0
-})
+});
 
 const Layout = ({ children }) =>
     <Fragment>
-        <div style={{ display: "flex", flexFlow: "column" }} >
+        <div style={{ display: 'flex', flexFlow: 'column' }} >
             <Link to='/'>Main</Link>
             <Link to='/page1'>Page 1</Link>
             <Link to='/page2'>Page 2</Link>
@@ -45,6 +45,6 @@ const App = () =>
 
             <Route path='/' component={Main} loading />
         </Switch>
-    </Layout>
+    </Layout>;
 
 export default App;
