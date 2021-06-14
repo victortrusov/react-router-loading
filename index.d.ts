@@ -17,12 +17,12 @@ declare module "react-router-loading" {
     export { Switch, SwitchProps } from "react-router-dom";
 
     export interface TopBarConfig {
-        autoRun: boolean;
-        barThickness: number;
-        barColors: Record<number, string>;
-        shadowBlur: number;
-        shadowColor: string;
-        className: string;
+        autoRun?: boolean;
+        barThickness?: number;
+        barColors?: Record<number, string>;
+        shadowBlur?: number;
+        shadowColor?: string;
+        className?: string;
     }
 
     export const topbar: { config: (c: TopBarConfig) => void };
