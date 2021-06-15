@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo, Suspense, Fragment } from 'react';
+import React, { useState, useContext, useEffect, useMemo, Suspense } from 'react';
 import { __RouterContext as RouterContext, useLocation } from 'react-router';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
@@ -32,24 +32,31 @@ const LoadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...routerC
         // if not the same route mount it to start loading
         if (route.location.pathname !== nextRoute.location.pathname) {
             setNextRoute(route);
+
             if (!route.loading) {
                 loadingContext.done();
                 setCurrentRoute(route);
             } else {
-                if (!isLoading) { loadingContext.start(); } else { loadingContext.skip(); }
+                if (!isLoading)
+                    loadingContext.start();
+                else
+                    loadingContext.skip();
             }
         }
 
         // if same as current route stop loading
         if (route.location.pathname === currentRoute.location.pathname) {
             loadingContext.done();
-            if (route.location.search !== currentRoute.location.search) { setCurrentRoute(route); }
+
+            if (route.location.search !== currentRoute.location.search)
+                setCurrentRoute(route);
         }
     }, [location]);
 
     // when loading ends
     useEffect(() => {
-        if (!isLoading && nextRoute.location.pathname !== currentRoute.location.pathname) { setCurrentRoute(nextRoute); }
+        if (!isLoading && nextRoute.location.pathname !== currentRoute.location.pathname)
+            setCurrentRoute(nextRoute);
     }, [isLoading]);
 
     // memo current and next components
