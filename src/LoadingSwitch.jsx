@@ -78,11 +78,14 @@ const Switcher = ({ children, loadingScreen: LoadingScreen, ...routerContext }) 
 // necessary wrappings around route.component
 const RouteComponent = ({ route, allRoutes, hidden }) =>
     <div style={hidden ? { display: 'none' } : undefined}>
-        <RouterContext.Provider value={route.routerContext}>
-            <Suspense fallback={null}>
-                {findMatchingElement(route.location, allRoutes)}
-            </Suspense>
-        </RouterContext.Provider>
+        {useMemo(
+            () => <RouterContext.Provider value={route.routerContext}>
+                <Suspense fallback={null}>
+                    {findMatchingElement(route.location, allRoutes)}
+                </Suspense>
+            </RouterContext.Provider>,
+            [route]
+        )}
     </div>;
 
 // combine topbar and switch
