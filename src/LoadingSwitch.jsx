@@ -1,11 +1,16 @@
-import React, { useState, useContext, useEffect, useMemo, Suspense } from 'react';
+import React, { useState, useContext, useEffect, useMemo, Suspense, useRef } from 'react';
 import { __RouterContext as RouterContext, useLocation } from 'react-router';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
 import DefaultLoadingScreen from './DefaultLoadingScreen';
-import { isLoadable, findMatchingElement } from './utils';
+import { isLoadable, findMatchingElement, isRoutesDifferent } from './utils';
 
-const Switcher = ({ children, loadingScreen: LoadingScreen, ...routerContext }) => {
+const Switcher = ({
+    children,
+    loadingScreen: LoadingScreen,
+    maxLoadingTime = 0,
+    ...routerContext
+}) => {
     const loadingContext = useContext(LoadingContext);
     const isCurrentlyLoading = useContext(LoadingGetterContext);
     const location = useLocation();
@@ -18,6 +23,8 @@ const Switcher = ({ children, loadingScreen: LoadingScreen, ...routerContext }) 
             : location;
     });
     const [next, setNext] = useState(current);
+
+    const timeout = useRef();
 
     // when location changed
     useEffect(() => {
@@ -49,9 +56,25 @@ const Switcher = ({ children, loadingScreen: LoadingScreen, ...routerContext }) 
 
     // when loading ends
     useEffect(() => {
-        if (!isCurrentlyLoading && next.location?.pathname !== current.location?.pathname)
+        if (!isCurrentlyLoading && isRoutesDifferent(current, next))
             setCurrent(next);
     }, [isCurrentlyLoading]);
+
+    // setTimeout if maxLoadingTime is provided
+    useEffect(() => {
+        if (maxLoadingTime > 0) {
+            if (timeout.current) {
+                clearTimeout(timeout.current);
+                timeout.current = undefined;
+            }
+
+            if (isRoutesDifferent(current, next)) {
+                timeout.current = setTimeout(() => {
+                    loadingContext.done();
+                }, maxLoadingTime);
+            }
+        }
+    }, [current, next]);
 
     // memo current and next components
     return useMemo(
@@ -67,7 +90,7 @@ const Switcher = ({ children, loadingScreen: LoadingScreen, ...routerContext }) 
 
             {/* hidden next */}
             {
-                next.location?.pathname !== current.location?.pathname &&
+                isRoutesDifferent(current, next) &&
                 <RouteComponent key={next.location?.pathname} route={next} allRoutes={children} hidden />
             }
         </>,
@@ -89,12 +112,12 @@ const RouteComponent = ({ route, allRoutes, hidden }) =>
     </div>;
 
 // combine topbar and switch
-const LoadingSwitch = ({ children, loadingScreen }) =>
+const LoadingSwitch = ({ children, loadingScreen, maxLoadingTime }) =>
     <LoadingMiddleware>
         <RouterContext.Consumer>
             {
                 context =>
-                    <Switcher {...context} loadingScreen={loadingScreen}>
+                    <Switcher {...context} loadingScreen={loadingScreen} maxLoadingTime={maxLoadingTime}>
                         {children}
                     </Switcher>
             }

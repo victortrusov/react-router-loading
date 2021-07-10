@@ -1,6 +1,8 @@
 import React from 'react';
 import { matchPath } from 'react-router';
 
+export const isRoutesDifferent = (current, next) => next.location?.pathname !== current.location?.pathname;
+
 const findMatchingRoute = (location, routes, callback = (matchingElement) => { }) => {
     let match;
 
