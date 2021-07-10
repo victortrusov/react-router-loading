@@ -42,10 +42,10 @@ import { Switch, Route } from "react-router-loading";
 Add `loading` prop to every route that must be loaded before switching
 ```js
 <Switch>
-    //data will be loaded before switching
+    // data will be loaded before switching
     <Route path="/page1" component={Page1} loading />
 
-    //instant switch as before
+    // instant switch as before
     <Route path="/page2" component={Page2} />
     ...
 </Switch>
@@ -57,9 +57,9 @@ import { LoadingContext } from "react-router-loading";
 const loadingContext = useContext(LoadingContext);
 
 const loading = async () => {
-    //loading some data
+    // loading some data
 
-    //call method to indicate that loading is done and we are ready to switch
+    // call method to indicate that loading is done and we are ready to switch
     loadingContext.done();
 };
 ```
@@ -70,15 +70,15 @@ import { LoadingContext } from "react-router-loading";
 class ClassComponent extends React.Component {
     ...
     loading = async () => {
-        //loading some data
+        // loading some data
 
-        //call method from props to indicate that loading is done
+        // call method from props to indicate that loading is done
         this.props.loadingContext.done();
     };
     ...
 };
 
-//we should wrap class component with Context Provider to get access to loading methods
+// we should wrap class component with Context Provider to get access to loading methods
 const ClassComponentWrapper = (props) =>
     <LoadingContext.Consumer>
         {loadingContext => <ClassComponent loadingContext={loadingContext} {...props} />}
@@ -88,11 +88,18 @@ const ClassComponentWrapper = (props) =>
 
 ## Config
 
-You can specify loading screen that would be shown at first loading of your app
+You can specify loading screen that would be shown at the first loading of your app
 ```js
 const MyLoadingScreen = () => <div>Loading...</div>
 
 <Switch loadingScreen={MyLoadingScreen}>
+...
+</Switch>
+```
+
+Use `maxLoadingTime` property if you want to limit loading time. Pages will switch if loading takes more time than specified in this property (ms).
+```js
+<Switch maxLoadingTime={500}>
 ...
 </Switch>
 ```
