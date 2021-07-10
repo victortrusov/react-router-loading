@@ -1,36 +1,35 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import { topbar } from '.';
 
 const LoadingMiddleware = ({ children }) => {
     const [loading, setLoading] = useState(false);
 
-    const start = () => {
+    const start = useCallback(() => {
         topbar.show();
         setLoading(true);
-    };
+    }, []);
 
-    const done = () => {
+    const done = useCallback(() => {
         topbar.hide();
         setLoading(false);
-    };
+    }, []);
 
-    const skip = () => {
+    const skip = useCallback(() => {
         topbar.hide();
         topbar.show();
-    };
+    }, []);
+
+    const loadingProvider = useMemo(
+        () => <LoadingContext.Provider value={{ start, done, skip }}>
+            {children}
+        </LoadingContext.Provider>,
+        []
+    );
 
     return (
         <LoadingGetterContext.Provider value={loading}>
-            {useMemo(() => <LoadingContext.Provider
-                value={{
-                    start,
-                    done,
-                    skip
-                }}
-            >
-                {children}
-            </LoadingContext.Provider>, [])}
+            {loadingProvider}
         </LoadingGetterContext.Provider>
     );
 };

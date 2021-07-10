@@ -3,41 +3,35 @@ import { __RouterContext as RouterContext, useLocation } from 'react-router';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
 import DefaultLoadingScreen from './DefaultLoadingScreen';
-import { findMatchRoute } from './utils';
+import { isLoadable, findMatchingElement } from './utils';
 
-const LoadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...routerContext }) => {
+const Switcher = ({ children, loadingScreen: LoadingScreen, ...routerContext }) => {
     const loadingContext = useContext(LoadingContext);
-    const isLoading = useContext(LoadingGetterContext);
+    const isCurrentlyLoading = useContext(LoadingGetterContext);
     const location = useLocation();
 
-    const [currentRoute, setCurrentRoute] = useState(() => {
-        const firstRoute = findMatchRoute(children, routerContext, location);
+    const [current, setCurrent] = useState(() => {
+        const isFirstPageLoadable = isLoadable(location, children);
         // if first page uses loading then show loading screen
-        return firstRoute.loading
-            ? {
-                location: 'loading',
-                routerContext,
-                component: LoadingScreen
-                    ? <LoadingScreen location={location} />
-                    : <DefaultLoadingScreen location={location} />
-            }
-            : firstRoute;
+        return isFirstPageLoadable
+            ? { showLoadingScreen: true }
+            : location;
     });
-    const [nextRoute, setNextRoute] = useState(currentRoute);
+    const [next, setNext] = useState(current);
 
     // when location changed
     useEffect(() => {
-        const route = findMatchRoute(children, routerContext, location);
+        const isPageLoadable = isLoadable(location, children);
 
         // if not the same route mount it to start loading
-        if (route.location.pathname !== nextRoute.location.pathname) {
-            setNextRoute(route);
+        if (location?.pathname !== next.location?.pathname) {
+            setNext({ location, routerContext });
 
-            if (!route.loading) {
+            if (!isPageLoadable) {
                 loadingContext.done();
-                setCurrentRoute(route);
+                setCurrent({ location, routerContext });
             } else {
-                if (!isLoading)
+                if (!isCurrentlyLoading)
                     loadingContext.start();
                 else
                     loadingContext.skip();
@@ -45,41 +39,48 @@ const LoadingSwitchLogic = ({ children, loadingScreen: LoadingScreen, ...routerC
         }
 
         // if same as current route stop loading
-        if (route.location.pathname === currentRoute.location.pathname) {
+        if (location?.pathname === current.location?.pathname) {
             loadingContext.done();
 
-            if (route.location.search !== currentRoute.location.search)
-                setCurrentRoute(route);
+            if (location.search !== current.location.search)
+                setCurrent({ location, routerContext });
         }
     }, [location]);
 
     // when loading ends
     useEffect(() => {
-        if (!isLoading && nextRoute.location.pathname !== currentRoute.location.pathname)
-            setCurrentRoute(nextRoute);
-    }, [isLoading]);
+        if (!isCurrentlyLoading && next.location?.pathname !== current.location?.pathname)
+            setCurrent(next);
+    }, [isCurrentlyLoading]);
 
     // memo current and next components
     return useMemo(
         () => <>
             {/* current */}
-            <RouteComponent key={currentRoute.location.pathname} route={currentRoute} />
+            {
+                !current.showLoadingScreen
+                    ? <RouteComponent key={current.location?.pathname} route={current} allRoutes={children} />
+                    : LoadingScreen
+                        ? <LoadingScreen location={current.location} />
+                        : <DefaultLoadingScreen location={current.location} />
+            }
+
             {/* hidden next */}
             {
-                nextRoute.location.pathname !== currentRoute.location.pathname &&
-                <RouteComponent key={nextRoute.location.pathname} route={nextRoute} hidden />
+                next.location?.pathname !== current.location?.pathname &&
+                <RouteComponent key={next.location?.pathname} route={next} allRoutes={children} hidden />
             }
         </>,
-        [currentRoute, nextRoute]
+        [current, next]
     );
 };
 
 // necessary wrappings around route.component
-const RouteComponent = ({ route, hidden }) =>
+const RouteComponent = ({ route, allRoutes, hidden }) =>
     <div style={hidden ? { display: 'none' } : undefined}>
         <RouterContext.Provider value={route.routerContext}>
             <Suspense fallback={null}>
-                {route.component}
+                {findMatchingElement(route.location, allRoutes)}
             </Suspense>
         </RouterContext.Provider>
     </div>;
@@ -90,9 +91,9 @@ const LoadingSwitch = ({ children, loadingScreen }) =>
         <RouterContext.Consumer>
             {
                 context =>
-                    <LoadingSwitchLogic {...context} loadingScreen={loadingScreen}>
+                    <Switcher {...context} loadingScreen={loadingScreen}>
                         {children}
-                    </LoadingSwitchLogic>
+                    </Switcher>
             }
         </RouterContext.Consumer>
     </LoadingMiddleware>;
