@@ -3,7 +3,7 @@ import { createContext } from 'react';
 const LoadingContext = createContext({
     start: () => { },
     done: () => { },
-    skip: () => { }
+    restart: () => { }
 });
 LoadingContext.displayName = 'LoadingSetter';
 

@@ -41,7 +41,7 @@ const Switcher = ({
                 if (!isCurrentlyLoading)
                     loadingContext.start();
                 else
-                    loadingContext.skip();
+                    loadingContext.restart();
             }
         }
 

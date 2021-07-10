@@ -15,13 +15,13 @@ const LoadingMiddleware = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const skip = useCallback(() => {
+    const restart = useCallback(() => {
         topbar.hide();
         topbar.show();
     }, []);
 
     const loadingProvider = useMemo(
-        () => <LoadingContext.Provider value={{ start, done, skip }}>
+        () => <LoadingContext.Provider value={{ start, done, restart }}>
             {children}
         </LoadingContext.Provider>,
         []
