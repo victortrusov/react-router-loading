@@ -1,26 +1,27 @@
 import React, { useState, useContext, useEffect, useMemo, Suspense, useRef } from 'react';
-import { __RouterContext as RouterContext, useLocation } from 'react-router';
+import { __RouterContext as RouterContext } from 'react-router';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
 import DefaultLoadingScreen from './DefaultLoadingScreen';
-import { isLoadable, findMatchingElement, isRoutesDifferent } from './utils';
+import { isLoadable, findMatchingElement, isPathsDifferent, isPathsEqual, isSearchDifferent } from './utils';
+const loadingPathname = '__loading';
 
 const Switcher = ({
     children,
     loadingScreen: LoadingScreen,
-    maxLoadingTime = 0,
-    ...routerContext
+    maxLoadingTime = 0
 }) => {
+    const context = useContext(RouterContext);
     const loadingContext = useContext(LoadingContext);
     const isCurrentlyLoading = useContext(LoadingGetterContext);
-    const location = useLocation();
 
     const [current, setCurrent] = useState(() => {
-        const isFirstPageLoadable = isLoadable(location, children);
+        const isFirstPageLoadable = isLoadable(context, children);
+
         // if first page uses loading then show loading screen
         return isFirstPageLoadable
-            ? { showLoadingScreen: true }
-            : location;
+            ? { ...context, location: { pathname: loadingPathname } }
+            : context;
     });
     const [next, setNext] = useState(current);
 
@@ -28,15 +29,15 @@ const Switcher = ({
 
     // when location changed
     useEffect(() => {
-        const isPageLoadable = isLoadable(location, children);
-
         // if not the same route mount it to start loading
-        if (location?.pathname !== next.location?.pathname) {
-            setNext({ location, routerContext });
+        if (isPathsDifferent(context, next)) {
+            const isPageLoadable = isLoadable(context, children);
+
+            setNext({ ...context });
 
             if (!isPageLoadable) {
                 loadingContext.done();
-                setCurrent({ location, routerContext });
+                setCurrent({ ...context });
             } else {
                 if (!isCurrentlyLoading)
                     loadingContext.start();
@@ -46,17 +47,17 @@ const Switcher = ({
         }
 
         // if same as current route stop loading
-        if (location?.pathname === current.location?.pathname) {
+        if (isPathsEqual(context, current)) {
             loadingContext.done();
 
-            if (location.search !== current.location.search)
-                setCurrent({ location, routerContext });
+            if (isSearchDifferent(context, current))
+                setCurrent({ ...context });
         }
-    }, [location]);
+    }, [context]);
 
     // when loading ends
     useEffect(() => {
-        if (!isCurrentlyLoading && isRoutesDifferent(current, next))
+        if (!isCurrentlyLoading && isPathsDifferent(current, next))
             setCurrent(next);
     }, [isCurrentlyLoading]);
 
@@ -68,7 +69,7 @@ const Switcher = ({
                 timeout.current = undefined;
             }
 
-            if (isRoutesDifferent(current, next)) {
+            if (isPathsDifferent(current, next)) {
                 timeout.current = setTimeout(() => {
                     loadingContext.done();
                 }, maxLoadingTime);
@@ -81,8 +82,8 @@ const Switcher = ({
         () => <>
             {/* current */}
             {
-                !current.showLoadingScreen
-                    ? <RouteComponent key={current.location?.pathname} route={current} allRoutes={children} />
+                current.location.pathname !== loadingPathname
+                    ? <RouteComponent key={current.location?.pathname} context={current} allRoutes={children} />
                     : LoadingScreen
                         ? <LoadingScreen location={current.location} />
                         : <DefaultLoadingScreen location={current.location} />
@@ -90,8 +91,8 @@ const Switcher = ({
 
             {/* hidden next */}
             {
-                isRoutesDifferent(current, next) &&
-                <RouteComponent key={next.location?.pathname} route={next} allRoutes={children} hidden />
+                isPathsDifferent(current, next) &&
+                <RouteComponent key={next.location?.pathname} context={next} allRoutes={children} hidden />
             }
         </>,
         [current, next]
@@ -99,29 +100,24 @@ const Switcher = ({
 };
 
 // necessary wrappings around route.component
-const RouteComponent = ({ route, allRoutes, hidden }) =>
+const RouteComponent = ({ context, allRoutes, hidden }) =>
     <div style={hidden ? { display: 'none' } : undefined}>
         {useMemo(
-            () => <RouterContext.Provider value={route.routerContext}>
+            () => <RouterContext.Provider value={context}>
                 <Suspense fallback={null}>
-                    {findMatchingElement(route.location, allRoutes)}
+                    {findMatchingElement(context, allRoutes)}
                 </Suspense>
             </RouterContext.Provider>,
-            [route]
+            [context]
         )}
     </div>;
 
 // combine topbar and switch
 const LoadingSwitch = ({ children, loadingScreen, maxLoadingTime }) =>
     <LoadingMiddleware>
-        <RouterContext.Consumer>
-            {
-                context =>
-                    <Switcher {...context} loadingScreen={loadingScreen} maxLoadingTime={maxLoadingTime}>
-                        {children}
-                    </Switcher>
-            }
-        </RouterContext.Consumer>
+        <Switcher loadingScreen={loadingScreen} maxLoadingTime={maxLoadingTime}>
+            {children}
+        </Switcher>
     </LoadingMiddleware>;
 
 export default LoadingSwitch;
