@@ -113,8 +113,8 @@ const RouteComponent = ({ context, allRoutes, hidden }) =>
     </div>;
 
 // combine topbar and switch
-const LoadingSwitch = ({ children, loadingScreen, maxLoadingTime }) =>
-    <LoadingMiddleware>
+const LoadingSwitch = ({ children, loadingScreen, maxLoadingTime, isLoading }) =>
+    <LoadingMiddleware isLoading={isLoading}>
         <Switcher loadingScreen={loadingScreen} maxLoadingTime={maxLoadingTime}>
             {children}
         </Switcher>

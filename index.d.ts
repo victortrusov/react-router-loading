@@ -8,7 +8,8 @@ declare module "react-router-loading" {
         & OmitNative<T, keyof SwitchProps>
         & {
             loadingScreen?: React.Component,
-            maxLoadingTime?: number
+            maxLoadingTime?: number,
+            isLoading?: boolean
         },
         any
     > { }
