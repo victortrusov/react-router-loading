@@ -104,6 +104,16 @@ Use `maxLoadingTime` property if you want to limit loading time. Pages will swit
 </Switch>
 ```
 
+If you want to change LoadingContext globally you can pass `isLoading` property to the Switch. This way you don't need to add extra `loadingContext.done();` in your page components after fetching is done.
+```js
+import { useIsFetching } from 'react-query';
+const isFetching = useIsFetching();
+
+<Switch isLoading={isFetching}>
+...
+</Switch>
+```
+
 Call `topbar.config()` if you want to change topbar configuration. More info <a href="http://buunguyen.github.io/topbar/" target="_blank">here</a>.
 ```js
 import { topbar } from "react-router-loading";
