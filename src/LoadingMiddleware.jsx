@@ -23,10 +23,9 @@ const LoadingMiddleware = ({ children, isLoading = false }) => {
 
     useEffect(() => {
         if (!isFirstRender.current) {
-            // didn't use start() to skip unnecessary topbar triggering
-            if (isLoading)
-                setLoading(true);
-            else
+            if (isLoading && !loading)
+                start();
+            else if (loading)
                 done();
         } else {
             isFirstRender.current = false;
