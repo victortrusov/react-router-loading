@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect, useMemo, Suspense, useRef } from 'react';
-import { __RouterContext as RouterContext } from 'react-router';
+import { __RouterContext as RouterContext } from 'react-router-dom';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
 import DefaultLoadingScreen from './DefaultLoadingScreen';
 import { isLoadable, findMatchingElement, isPathsDifferent, isPathsEqual, isSearchDifferent } from './utils';
+
 const loadingPathname = '__loading';
 
 const Switcher = ({
