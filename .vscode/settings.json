@@ -1,15 +1,10 @@
 {
-    "files.exclude": {
-        "**/node_modules": true,
-        "**/dist": true,
-        "**/.git": true,
-    },
     "search.exclude": {
         "**/node_modules": true,
         "**/dist": true,
-        "**/.git": true,
+        "**/.git": true
     },
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
-    "editor.detectIndentation": false,
+    "editor.detectIndentation": false
 }
