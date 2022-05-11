@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DefaultLoadingScreen = () =>
+const DefaultLoadingScreen = () => (
     <div
         style={{
             position: 'fixed',
@@ -8,8 +8,9 @@ const DefaultLoadingScreen = () =>
             bottom: 0,
             left: 0,
             right: 0,
-            backgroundColor: 'white'
+            backgroundColor: 'white',
         }}
-    />;
+    />
+);
 
 export default DefaultLoadingScreen;
