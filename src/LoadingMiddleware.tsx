@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef, FC, PropsWithChildren } from 'react';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import { topbar } from '.';
 
-const LoadingMiddleware = ({ children, isLoading = false }) => {
+const LoadingMiddleware: FC<PropsWithChildren<{ isLoading?: boolean }>> = ({ children, isLoading = false }) => {
     const [loading, setLoading] = useState(isLoading);
     const isFirstRender = useRef(true);
 
@@ -23,27 +23,19 @@ const LoadingMiddleware = ({ children, isLoading = false }) => {
 
     useEffect(() => {
         if (!isFirstRender.current) {
-            if (isLoading && !loading)
-                start();
-            else if (loading)
-                done();
+            if (isLoading && !loading) start();
+            else if (loading) done();
         } else {
             isFirstRender.current = false;
         }
     }, [isLoading]);
 
     const loadingProvider = useMemo(
-        () => <LoadingContext.Provider value={{ start, done, restart }}>
-            {children}
-        </LoadingContext.Provider>,
+        () => <LoadingContext.Provider value={{ start, done, restart }}>{children}</LoadingContext.Provider>,
         []
     );
 
-    return (
-        <LoadingGetterContext.Provider value={loading}>
-            {loadingProvider}
-        </LoadingGetterContext.Provider>
-    );
+    return <LoadingGetterContext.Provider value={loading}>{loadingProvider}</LoadingGetterContext.Provider>;
 };
 
 export default LoadingMiddleware;
