@@ -2,7 +2,14 @@ import React, { useState, useContext, useEffect, useMemo, PropsWithChildren, use
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import LoadingMiddleware from './LoadingMiddleware';
 import DefaultLoadingScreen from './DefaultLoadingScreen';
-import { isLoadable, isPathsDifferent, isPathsEqual, isSearchDifferent, createRoutesFromChildren } from './utils';
+import {
+    isLoadable,
+    isPathsDifferent,
+    isPathsEqual,
+    isSearchDifferent,
+    createRoutesFromChildren,
+    replaceWithRoutes,
+} from './utils';
 import { Routes, useLocation } from 'react-router-dom';
 
 const LOADING_PATHNAME = '__loading';
@@ -81,7 +88,11 @@ const Switcher: FC<SwitcherProps> = ({ children, loadingScreen: LoadingScreen, m
         if (current.pathname === LOADING_PATHNAME) {
             return LoadingScreen ? <LoadingScreen location={current} /> : <DefaultLoadingScreen location={current} />;
         } else {
-            return <Routes location={isPathsDifferent(current, next) ? next : current}>{children}</Routes>;
+            return (
+                <Routes location={isPathsDifferent(current, next) ? next : current}>
+                    {React.Children.map(children, replaceWithRoutes)}
+                </Routes>
+            );
         }
     }, [current, next]);
 };

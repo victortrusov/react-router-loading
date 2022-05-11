@@ -1,5 +1,5 @@
 import React from 'react';
-import { matchPath, RouteObject, Location } from 'react-router-dom';
+import { matchPath, RouteObject, Location, Route } from 'react-router-dom';
 
 export default function invariant(expr: any, msg: string): asserts expr {
     if (!expr) {
@@ -65,6 +65,24 @@ const findMatchingRoute = (
     }
 
     return null;
+};
+
+export const replaceWithRoutes = element => {
+    if (!React.isValidElement(element)) {
+        return;
+    }
+
+    if (element.type === React.Fragment) {
+        return <>{React.Children.map(element.props.children, replaceWithRoutes)}</>;
+    }
+
+    const { loading, ...routeProps } = element.props;
+
+    if (element.props.children) {
+        return <Route {...routeProps}>{React.Children.map(element.props.children, replaceWithRoutes)}</Route>;
+    }
+
+    return <Route {...routeProps} />;
 };
 
 export const isLoadable = (location: Location, routes: LoadingRouteObject[]) =>
