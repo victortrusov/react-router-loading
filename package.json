@@ -16,7 +16,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/victortrusov/react-router-loading.git"
+        "url": "git+https://github.com/jayarjo/react-router-loading.git"
     },
     "files": [
         "dist/*",
@@ -37,11 +37,16 @@
         "bar"
     ],
     "author": "Victor Trusov",
+    "contributors": [
+        {
+            "name": "Davit Barbakadze"
+        }
+    ],
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/victortrusov/react-router-loading/issues"
+        "url": "https://github.com/jayarjo/react-router-loading/issues"
     },
-    "homepage": "https://github.com/victortrusov/react-router-loading#readme",
+    "homepage": "https://github.com/jayarjo/react-router-loading#readme",
     "peerDependencies": {
         "react": "^16.8.0 || ^17.0.0",
         "react-dom": "^16.8.0 || ^17.0.0",
