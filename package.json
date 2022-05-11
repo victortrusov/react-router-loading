@@ -1,6 +1,6 @@
 {
     "name": "react-router-loading",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "description": "Custom react router switch that allows you to load data before switching the screen",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
