@@ -67,7 +67,7 @@ const findMatchingRoute = (
     return null;
 };
 
-export const replaceWithRoutes = element => {
+export const replaceWithRoutes = (element: React.ReactNode) => {
     if (!React.isValidElement(element)) {
         return;
     }

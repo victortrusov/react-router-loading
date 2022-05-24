@@ -1,6 +1,11 @@
 import React from 'react';
+import { Location } from 'react-router-dom';
 
-const DefaultLoadingScreen = () => (
+export type LoadingScreenProps = {
+    location?: Location;
+};
+
+const DefaultLoadingScreen: React.FC<LoadingScreenProps> = () => (
     <div
         style={{
             position: 'fixed',

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Switch, Route, topbar } from '../../dist';
+import { Routes, Route, topbar } from '../../dist';
 import { Main } from './pages/Main';
 import { Page1 } from './pages/Page1';
 import { Page2 } from './pages/Page2';
@@ -31,8 +31,8 @@ const Layout = ({ children }) => (
 
 const App = () => (
     <Layout>
-        {/* using Switch from react-router-loading */}
-        <Switch>
+        {/* using Routes from react-router-loading */}
+        <Routes>
             {/* func component with state */}
             <Route path="/page1" element={<Page1 />} loading />
 
@@ -43,7 +43,7 @@ const App = () => (
             <Route path="/page2" element={<Page2 />} loading />
 
             <Route path="/" element={<Main />} loading />
-        </Switch>
+        </Routes>
     </Layout>
 );
 

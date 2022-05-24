@@ -1,11 +1,11 @@
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
-import Switch from './LoadingSwitch';
+import Routes from './LoadingSwitch';
 import Route from './LoadingRoute';
 
 export interface TopBarConfig {
     autoRun?: boolean;
     barThickness?: number;
-    barColors?: Record<number, string>;
+    barColors?: Record<string, string>;
     shadowBlur?: number;
     shadowColor?: string;
     className?: string;
@@ -26,4 +26,4 @@ const topbar: Topbar =
           }
         : require('topbar');
 
-export { topbar, LoadingContext, LoadingGetterContext, Switch, Route };
+export { topbar, LoadingContext, LoadingGetterContext, Routes, Route };
