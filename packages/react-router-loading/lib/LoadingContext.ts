@@ -1,18 +1,18 @@
 import { createContext } from 'react';
 
 const LoadingContext = createContext({
-    start: () => { },
-    done: () => { },
-    restart: () => { }
+  start: () => { },
+  done: () => { },
+  restart: () => { }
 });
 LoadingContext.displayName = 'LoadingSetter';
 
 const LoadingGetterContext = createContext({
-    loading: false
+  loading: false
 });
 LoadingGetterContext.displayName = 'LoadingGetter';
 
 export {
-    LoadingContext,
-    LoadingGetterContext
+  LoadingContext,
+  LoadingGetterContext
 };
