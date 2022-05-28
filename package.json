@@ -1,6 +1,6 @@
 {
     "name": "react-router-loading",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "Custom react router switch that allows you to load data before switching the screen",
     "main": "dist/index.js",
     "types": "index.d.ts",
@@ -40,8 +40,8 @@
     },
     "homepage": "https://github.com/victortrusov/react-router-loading#readme",
     "peerDependencies": {
-        "react": "^16.8.0 || ^17.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0",
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
         "react-router-dom": "^5.0.0"
     },
     "dependencies": {
@@ -64,9 +64,9 @@
         "eslint-plugin-react": "^7.26.1",
         "http-server-spa": "1.3.0",
         "node": "16.10.0",
-        "react": "17.0.2",
-        "react-dom": "17.0.2",
-        "react-router-dom": "5.3.0",
+        "react": "18.1.0",
+        "react-dom": "18.1.0",
+        "react-router-dom": "5.3.3",
         "webpack": "5.55.1",
         "webpack-cli": "4.8.0"
     }
