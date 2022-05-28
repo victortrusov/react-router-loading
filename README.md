@@ -10,9 +10,13 @@ Custom react router switch that allows you to load data before switching the scr
 <a href="https://codesandbox.io/s/react-router-loading-demo-sguvm" target="_blank">DEMO</a>
 
 ## Requirements
+
+### !!! Current version doesn't support React Router 6 !!!  
+It will be supported in the next major version I'm working on
+
 ```js
-"react": "^16.8.0 || ^17.0.0",
-"react-dom": "^16.8.0 || ^17.0.0",
+"react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+"react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
 "react-router-dom": "^5.0.0"
 ```
 
