@@ -1,12 +1,19 @@
-import React, { useState, useContext, useEffect, useMemo, Suspense, useRef } from 'react';
-import { __RouterContext as RouterContext } from 'react-router';
-import { LoadingContext, LoadingGetterContext } from './LoadingContext';
-import LoadingMiddleware from './LoadingMiddleware';
-import DefaultLoadingScreen from './DefaultLoadingScreen';
-import { isLoadable, findMatchingElement, isPathsDifferent, isPathsEqual, isSearchDifferent } from './utils';
-const loadingPathname = '__loading';
 
-const Switcher = ({
+import React, { useState, useContext, useEffect, useMemo, useRef, PropsWithChildren, FC } from 'react';
+import { RouteComponentProps, __RouterContext as RouterContext } from 'react-router';
+import { LoadingContext, LoadingGetterContext } from './LoadingContext';
+import DefaultLoadingScreen from './_DefaultLoadingScreen';
+import { isLoadable, isPathsDifferent, isPathsEqual, isSearchDifferent } from './utils';
+import { RouteWrapper } from './_RouteWrapper';
+
+interface LoadingSwitchProps {
+  loadingScreen?: React.ElementType;
+  maxLoadingTime?: number;
+}
+
+const LOADING_PATHNAME = '__loading';
+
+const LoadingSwitch: FC<PropsWithChildren<LoadingSwitchProps>> = ({
   children,
   loadingScreen: LoadingScreen,
   maxLoadingTime = 0
@@ -15,12 +22,15 @@ const Switcher = ({
   const loadingContext = useContext(LoadingContext);
   const isCurrentlyLoading = useContext(LoadingGetterContext);
 
-  const [current, setCurrent] = useState(() => {
+  const [current, setCurrent] = useState<RouteComponentProps>(() => {
     const isFirstPageLoadable = isLoadable(context, children);
 
     // if first page uses loading then show loading screen
     return isFirstPageLoadable
-      ? { ...context, location: { pathname: loadingPathname } }
+      ? {
+        ...context,
+        location: { ...context.location, pathname: LOADING_PATHNAME }
+      }
       : context;
   });
   const [next, setNext] = useState(current);
@@ -82,51 +92,25 @@ const Switcher = ({
     () => <>
       {/* current */}
       {
-        current.location.pathname !== loadingPathname
-          ? <RouteComponent key={current.location?.pathname} context={current} allRoutes={children} />
+        current.location.pathname !== LOADING_PATHNAME
+          ? <RouteWrapper key={current.location?.pathname} context={current}>
+            {children}
+          </RouteWrapper>
           : LoadingScreen
-            ? <LoadingScreen location={current.location} />
+            ? <LoadingScreen />
             : <DefaultLoadingScreen />
       }
 
       {/* hidden next */}
       {
         isPathsDifferent(current, next) &&
-        <RouteComponent key={next.location?.pathname} context={next} allRoutes={children} hidden />
+        <RouteWrapper key={next.location?.pathname} context={next} hidden>
+          {children}
+        </RouteWrapper>
       }
     </>,
     [current, next]
   );
 };
-
-// necessary wrappings around route.component
-const RouteComponent = ({ context, allRoutes, hidden }: {
-  context: any;
-  allRoutes: any;
-  hidden?: any;
-}) =>
-  <div style={hidden ? { display: 'none' } : undefined}>
-    {useMemo(
-      () => <RouterContext.Provider value={context}>
-        <Suspense fallback={null}>
-          {findMatchingElement(context, allRoutes)}
-        </Suspense>
-      </RouterContext.Provider>,
-      [context]
-    )}
-  </div>;
-
-// combine topbar and switch
-const LoadingSwitch = ({ children, loadingScreen, maxLoadingTime, isLoading }: {
-  children: React.ReactNode;
-  loadingScreen: any;
-  maxLoadingTime: any;
-  isLoading: any;
-}) =>
-  <LoadingMiddleware isLoading={isLoading}>
-    <Switcher loadingScreen={loadingScreen} maxLoadingTime={maxLoadingTime}>
-      {children}
-    </Switcher>
-  </LoadingMiddleware>;
 
 export default LoadingSwitch;

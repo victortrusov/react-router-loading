@@ -1,16 +1,26 @@
 import { createContext } from 'react';
 
-const LoadingContext = createContext({
+// Interface
+
+interface LoadingContextActions {
+  start: () => void;
+  done: () => void;
+  restart: () => void;
+}
+
+// Actions
+
+const LoadingContext = createContext<LoadingContextActions>({
   start: () => { },
   done: () => { },
   restart: () => { }
 });
-LoadingContext.displayName = 'LoadingSetter';
+LoadingContext.displayName = 'LoadingContext';
 
-const LoadingGetterContext = createContext({
-  loading: false
-});
-LoadingGetterContext.displayName = 'LoadingGetter';
+// Value
+
+const LoadingGetterContext = createContext<boolean>(false);
+LoadingGetterContext.displayName = 'LoadingGetterContext';
 
 export {
   LoadingContext,

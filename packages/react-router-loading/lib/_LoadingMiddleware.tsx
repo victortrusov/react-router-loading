@@ -1,11 +1,8 @@
-import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef, FC, PropsWithChildren } from 'react';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import { topbar } from '.';
 
-const LoadingMiddleware = ({ children, isLoading = false }: {
-  children: React.ReactNode;
-  isLoading: boolean;
-}) => {
+const LoadingMiddleware: FC<PropsWithChildren<{ isLoading?: boolean }>> = ({ children, isLoading = false }) => {
   const [loading, setLoading] = useState(isLoading);
   const isFirstRender = useRef(true);
 
@@ -43,7 +40,7 @@ const LoadingMiddleware = ({ children, isLoading = false }: {
   );
 
   return (
-    <LoadingGetterContext.Provider value={{ loading }}>
+    <LoadingGetterContext.Provider value={loading}>
       {loadingProvider}
     </LoadingGetterContext.Provider>
   );

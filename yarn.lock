@@ -1931,13 +1931,6 @@ react-router-dom@^5.3.3:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router-loading@*:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/react-router-loading/-/react-router-loading-0.4.2.tgz#4953ac15d3b0aa78f7d82fb17ec1f44655f4d034"
-  integrity sha512-DVp4IiatEIG2KLqmCA2CE/M+U7Oy3c3E40GdV0lvK9NwxQ/NlZhe4c+bbvdvQciOXNFrQSTZ7kHFwwtmeeuDqg==
-  dependencies:
-    topbar "^1.0.1"
-
 react-router@5.3.3:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-5.3.3.tgz#8e3841f4089e728cf82a429d92cdcaa5e4a3a288"
