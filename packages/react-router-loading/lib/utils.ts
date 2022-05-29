@@ -1,16 +1,20 @@
-import React from 'react';
-import { matchPath } from 'react-router';
+import React, { ReactElement } from 'react';
+import { matchPath, RouteComponentProps } from 'react-router';
 
-export const isPathsDifferent = (first, second) =>
+export const isPathsDifferent = (first: RouteComponentProps, second: RouteComponentProps) =>
   first.location?.pathname !== second.location?.pathname;
 
-export const isPathsEqual = (first, second) =>
+export const isPathsEqual = (first: RouteComponentProps, second: RouteComponentProps) =>
   first.location?.pathname === second.location?.pathname;
 
-export const isSearchDifferent = (first, second) =>
+export const isSearchDifferent = (first: RouteComponentProps, second: RouteComponentProps) =>
   first.location?.search !== second.location?.search;
 
-const findMatchingRoute = (context, routes, callback = (matchingElement) => { }) => {
+const findMatchingRoute = (
+  context: RouteComponentProps,
+  routes: React.ReactNode,
+  callback: (matchingElement: ReactElement) => void
+) => {
   let match;
 
   // We use React.Children.forEach instead of React.Children.toArray().find()
@@ -19,10 +23,10 @@ const findMatchingRoute = (context, routes, callback = (matchingElement) => { })
   // component at different URLs.
   React.Children.forEach(routes, child => {
     if (match == null && React.isValidElement(child)) {
-      const path = (child.props as any).path || (child.props as any).from;
+      const path = child.props.path || child.props.from;
 
       match = path
-        ? matchPath(context.location?.pathname, { ...(child.props as any), path })
+        ? matchPath(context.location?.pathname, { ...child.props, path })
         : context?.match;
 
       if (match)
@@ -33,8 +37,8 @@ const findMatchingRoute = (context, routes, callback = (matchingElement) => { })
   return match;
 };
 
-export const isLoadable = (context, routes) => {
-  let isLoadable;
+export const isLoadable = (context: RouteComponentProps, routes: React.ReactNode) => {
+  let isLoadable: boolean;
 
   const match = findMatchingRoute(
     context,
@@ -45,8 +49,8 @@ export const isLoadable = (context, routes) => {
   return match ? isLoadable : false;
 };
 
-export const findMatchingElement = (context, routes) => {
-  let element;
+export const findMatchingElement = (context: RouteComponentProps, routes: React.ReactNode) => {
+  let element: ReactElement;
 
   const match = findMatchingRoute(
     context,
