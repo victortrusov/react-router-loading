@@ -1,6 +1,6 @@
 
 import React, { useState, useContext, useEffect, useMemo, useRef, PropsWithChildren, FC } from 'react';
-import { useLocation, Location, useNavigationType, NavigationType } from 'react-router-dom';
+import { useLocation, Location, useNavigationType, NavigationType } from 'react-router';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import DefaultLoadingScreen from './_DefaultLoadingScreen';
 import { createRoutesFromChildren, isLoadable, isPathsDifferent, isPathsEqual, isSearchDifferent } from './utils';

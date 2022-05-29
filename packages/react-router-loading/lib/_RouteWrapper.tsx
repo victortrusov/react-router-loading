@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React, { useMemo, FC } from 'react';
-import { Location, NavigationType, UNSAFE_LocationContext, useRoutes } from 'react-router-dom';
+import { Location, NavigationType, UNSAFE_LocationContext, useRoutes } from 'react-router';
 import { LoadingRouteObject } from './utils';
 
 interface RouteWrapperProps {

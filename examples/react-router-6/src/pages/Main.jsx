@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { LoadingContext } from 'react-router-loading';
+import React, { useEffect, useState } from 'react';
+import { useLoadingContext } from 'react-router-loading';
 import loadData from './fetchers';
 
 export const Main = () => {
   const [state, setState] = useState();
-  const loadingContext = useContext(LoadingContext);
+  const loadingContext = useLoadingContext();
 
   const loading = async () => {
     // loading some data

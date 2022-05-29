@@ -1,7 +1,7 @@
 {
   "name": "react-router-loading",
   "version": "1.0.0-beta.0",
-  "description": "Custom react router switch that allows you to load data before switching the screen",
+  "description": "Wrapper for react-router that allows you to load data before switching the screen",
   "author": "Victor Trusov",
   "repository": {
     "type": "git",
@@ -34,13 +34,13 @@
   "peerDependencies": {
     "react": ">=16.8",
     "react-dom": ">=16.8",
-    "react-router-dom": "6"
+    "react-router": "6"
   },
   "dependencies": {
     "topbar": "^1.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-router-dom": "^6.3.0"
+    "react-router": "^6.3.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.36",

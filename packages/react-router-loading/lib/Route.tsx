@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Route as OriginalRoute, RouteProps as OriginalRouteProps } from 'react-router-dom';
+import { Route as OriginalRoute, RouteProps as OriginalRouteProps } from 'react-router';
 
 interface RouteProps extends OriginalRouteProps {
   loading?: boolean;
