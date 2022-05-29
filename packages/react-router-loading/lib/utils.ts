@@ -1,64 +1,73 @@
-import React, { ReactElement } from 'react';
-import { matchPath, RouteComponentProps } from 'react-router';
+import React from 'react';
+import { matchPath, RouteObject, Location } from 'react-router-dom';
 
-export const isPathsDifferent = (first: RouteComponentProps, second: RouteComponentProps) =>
-  first.location?.pathname !== second.location?.pathname;
+export type LoadingRouteObject = RouteObject & {
+  loading?: boolean;
+};
 
-export const isPathsEqual = (first: RouteComponentProps, second: RouteComponentProps) =>
-  first.location?.pathname === second.location?.pathname;
+// adapted from original createRoutesFromChildren
+// https://github.com/remix-run/react-router/blob/0f9435a8134b2b5dddfd716a18d17aefe4461fe1/packages/react-router/lib/components.tsx
+export function createRoutesFromChildren(children: React.ReactNode): LoadingRouteObject[] {
+  const routes: LoadingRouteObject[] = [];
 
-export const isSearchDifferent = (first: RouteComponentProps, second: RouteComponentProps) =>
-  first.location?.search !== second.location?.search;
-
-const findMatchingRoute = (
-  context: RouteComponentProps,
-  routes: React.ReactNode,
-  callback: (matchingElement: ReactElement) => void
-) => {
-  let match;
-
-  // We use React.Children.forEach instead of React.Children.toArray().find()
-  // here because toArray adds keys to all child elements and we do not want
-  // to trigger an unmount/remount for two <Route>s that render the same
-  // component at different URLs.
-  React.Children.forEach(routes, child => {
-    if (match == null && React.isValidElement(child)) {
-      const path = child.props.path || child.props.from;
-
-      match = path
-        ? matchPath(context.location?.pathname, { ...child.props, path })
-        : context?.match;
-
-      if (match)
-        callback(child);
+  React.Children.forEach(children, element => {
+    if (!React.isValidElement(element)) {
+      // Ignore non-elements. This allows people to more easily inline
+      // conditionals in their route config.
+      return;
     }
+
+    if (element.type === React.Fragment) {
+      // Transparently support React.Fragment and its children.
+      // eslint-disable-next-line prefer-spread
+      routes.push.apply(routes, createRoutesFromChildren(element.props.children));
+      return;
+    }
+
+    const route: LoadingRouteObject = {
+      caseSensitive: element.props.caseSensitive,
+      element: element.props.element,
+      index: element.props.index,
+      path: element.props.path,
+      loading: element.props.loading,
+    };
+
+    if (element.props.children) {
+      route.children = createRoutesFromChildren(element.props.children);
+    }
+
+    routes.push(route);
   });
 
-  return match;
+  return routes;
+}
+
+export const isPathsDifferent = (first: Location, second: Location) =>
+  first.pathname !== second.pathname;
+
+export const isPathsEqual = (first: Location, second: Location) =>
+  first.pathname === second.pathname;
+
+export const isSearchDifferent = (first: Location, second: Location) =>
+  first.search !== second.search;
+
+const findMatchingRoute = (
+  location: Location,
+  routes: LoadingRouteObject[],
+  pathParts: string[] = []
+): LoadingRouteObject | null => {
+  for (const route of routes) {
+    const allParts = [...pathParts, route.path];
+    if (matchPath(location.pathname, allParts.join(''))) {
+      return route;
+    }
+    if (route.children?.length) {
+      return findMatchingRoute(location, route.children, allParts);
+    }
+  }
+
+  return null;
 };
 
-export const isLoadable = (context: RouteComponentProps, routes: React.ReactNode) => {
-  let isLoadable: boolean;
-
-  const match = findMatchingRoute(
-    context,
-    routes,
-    (matchingElement) => { isLoadable = matchingElement.props.loading; }
-  );
-
-  return match ? isLoadable : false;
-};
-
-export const findMatchingElement = (context: RouteComponentProps, routes: React.ReactNode) => {
-  let element: ReactElement;
-
-  const match = findMatchingRoute(
-    context,
-    routes,
-    (matchingElement) => { element = matchingElement; }
-  );
-
-  return match
-    ? React.cloneElement(element, { location: context.location, computedMatch: match })
-    : null;
-};
+export const isLoadable = (location: Location, routes: LoadingRouteObject[]) =>
+  !!findMatchingRoute(location, routes)?.loading;

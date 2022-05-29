@@ -1,5 +1,5 @@
 {
-  "name": "react-router-5",
+  "name": "react-router-6",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -10,8 +10,8 @@
   "dependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-router-dom": "^5.3.3",
-    "react-router-loading": "0.4.2"
+    "react-router-dom": "^6.3.0",
+    "react-router-loading": "1.0.0-beta.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",

@@ -1,53 +1,59 @@
 
 import React, { useState, useContext, useEffect, useMemo, useRef, PropsWithChildren, FC } from 'react';
-import { RouteComponentProps, __RouterContext as RouterContext } from 'react-router';
+import { useLocation, Location } from 'react-router-dom';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import DefaultLoadingScreen from './_DefaultLoadingScreen';
-import { isLoadable, isPathsDifferent, isPathsEqual, isSearchDifferent } from './utils';
+import { createRoutesFromChildren, isLoadable, isPathsDifferent, isPathsEqual, isSearchDifferent } from './utils';
 import { RouteWrapper } from './_RouteWrapper';
 
-interface LoadingSwitchProps {
+interface LoadingRoutesProps {
   loadingScreen?: React.ElementType;
   maxLoadingTime?: number;
 }
 
 const LOADING_PATHNAME = '__loading';
 
-const LoadingSwitch: FC<PropsWithChildren<LoadingSwitchProps>> = ({
+const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
   children,
   loadingScreen: LoadingScreen,
   maxLoadingTime = 0
 }) => {
-  const context = useContext(RouterContext);
+
+  // 🪝 Hooks
+  const location = useLocation();
   const loadingContext = useContext(LoadingContext);
   const isCurrentlyLoading = useContext(LoadingGetterContext);
 
-  const [current, setCurrent] = useState<RouteComponentProps>(() => {
-    const isFirstPageLoadable = isLoadable(context, children);
+  // 🗄 State
+  const routes = useMemo(
+    () => createRoutesFromChildren(children),
+    [children]
+  );
 
-    // if first page uses loading then show loading screen
+  const [current, setCurrent] = useState<Location>(() => {
+    const isFirstPageLoadable = isLoadable(location, routes);
+
+    // if first page loadable showing loading screen
     return isFirstPageLoadable
-      ? {
-        ...context,
-        location: { ...context.location, pathname: LOADING_PATHNAME }
-      }
-      : context;
+      ? { ...location, pathname: LOADING_PATHNAME }
+      : location;
   });
-  const [next, setNext] = useState(current);
+  const [next, setNext] = useState<Location>(current);
 
   const timeout: React.MutableRefObject<NodeJS.Timeout | undefined> = useRef();
 
+  // 🔄 Lifecycle
   // when location changed
   useEffect(() => {
     // if not the same route mount it to start loading
-    if (isPathsDifferent(context, next)) {
-      const isPageLoadable = isLoadable(context, children);
+    if (isPathsDifferent(location, next)) {
+      const isPageLoadable = isLoadable(location, routes);
 
-      setNext({ ...context });
+      setNext({ ...location });
 
       if (!isPageLoadable) {
         loadingContext.done();
-        setCurrent({ ...context });
+        setCurrent({ ...location });
       } else {
         if (!isCurrentlyLoading)
           loadingContext.start();
@@ -57,13 +63,13 @@ const LoadingSwitch: FC<PropsWithChildren<LoadingSwitchProps>> = ({
     }
 
     // if same as current route stop loading
-    if (isPathsEqual(context, current)) {
+    if (isPathsEqual(location, current)) {
       loadingContext.done();
 
-      if (isSearchDifferent(context, current))
-        setCurrent({ ...context });
+      if (isSearchDifferent(location, current))
+        setCurrent({ ...location });
     }
-  }, [context]);
+  }, [location]);
 
   // when loading ends
   useEffect(() => {
@@ -92,8 +98,8 @@ const LoadingSwitch: FC<PropsWithChildren<LoadingSwitchProps>> = ({
     () => <>
       {/* current */}
       {
-        current.location.pathname !== LOADING_PATHNAME
-          ? <RouteWrapper key={current.location?.pathname} context={current}>
+        current.pathname !== LOADING_PATHNAME
+          ? <RouteWrapper key={current.pathname} location={current}>
             {children}
           </RouteWrapper>
           : LoadingScreen
@@ -104,7 +110,7 @@ const LoadingSwitch: FC<PropsWithChildren<LoadingSwitchProps>> = ({
       {/* hidden next */}
       {
         isPathsDifferent(current, next) &&
-        <RouteWrapper key={next.location?.pathname} context={next} hidden>
+        <RouteWrapper key={next.pathname} location={next} hidden>
           {children}
         </RouteWrapper>
       }
@@ -113,4 +119,4 @@ const LoadingSwitch: FC<PropsWithChildren<LoadingSwitchProps>> = ({
   );
 };
 
-export default LoadingSwitch;
+export default LoadingRoutes;

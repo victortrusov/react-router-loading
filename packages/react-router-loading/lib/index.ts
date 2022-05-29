@@ -1,7 +1,7 @@
 import { default as _topbar } from 'topbar';
 export { LoadingContext, LoadingGetterContext } from './LoadingContext';
 export { default as Route } from './Route';
-export { default as Switch } from './Switch';
+export { default as Routes } from './Routes';
 
 export interface TopBarConfig {
   autoRun?: boolean;
