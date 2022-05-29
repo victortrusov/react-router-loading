@@ -3,7 +3,7 @@ import { LoadingContext } from 'react-router-loading';
 import loadData from './fetchers';
 
 // example with class react component
-class Page2Component extends React.Component<{ loadingContext: { done: () => void } }> {
+class Page2Component extends React.Component {
   state = { data: undefined };
 
   loading = async () => {
@@ -30,7 +30,7 @@ class Page2Component extends React.Component<{ loadingContext: { done: () => voi
 }
 
 // we should wrap class component with Context Provider to get access to loading methods
-export const Page2 = (props: unknown) =>
+export const Page2 = (props) =>
   <LoadingContext.Consumer>
     {loadingContext => <Page2Component loadingContext={loadingContext} {...props} />}
   </LoadingContext.Consumer>;

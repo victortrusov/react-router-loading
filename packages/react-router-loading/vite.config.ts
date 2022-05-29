@@ -19,11 +19,12 @@ export default defineConfig({
       fileName: (format) => `react-router-loading.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react-router-dom'],
+      external: ['react', 'react-dom', 'react-router', 'react-router-dom'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
+          'react-router': 'ReactRouter',
           'react-router-dom': 'ReactRouterDOM',
         },
       },

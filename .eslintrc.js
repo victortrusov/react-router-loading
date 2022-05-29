@@ -1,24 +1,29 @@
 module.exports = {
+  root: true,
   'env': {
-      'browser': true,
-      'es2021': true
+    'browser': true,
+    'es2021': true
   },
+  ignorePatterns: [
+    'node_modules/**',
+    '**/dist/**',
+  ],
   'extends': [
-      'eslint:recommended',
-      'plugin:react/recommended',
-      'plugin:@typescript-eslint/recommended'
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended'
   ],
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
-      'ecmaFeatures': {
-          'jsx': true
-      },
-      'ecmaVersion': 'latest',
-      'sourceType': 'module'
+    'ecmaFeatures': {
+      'jsx': true
+    },
+    'ecmaVersion': 'latest',
+    'sourceType': 'module'
   },
   'plugins': [
-      'react',
-      '@typescript-eslint'
+    'react',
+    '@typescript-eslint'
   ],
   'rules': {
     'no-var': 'error',
@@ -28,27 +33,27 @@ module.exports = {
     'no-debugger': 'warn',
     'prefer-const': 'warn',
     'camelcase': 'warn',
-      'indent': [
-          'warn',
-          2,
-          {
-            'SwitchCase': 1
-          }
-      ],
-      'linebreak-style': [
-          'warn',
-          'unix'
-      ],
+    'indent': [
+      'warn',
+      2,
+      {
+        'SwitchCase': 1
+      }
+    ],
+    'linebreak-style': [
+      'warn',
+      'unix'
+    ],
     'quotes': [
-        'warn',
-        'single',
-        {
-          'avoidEscape': true
-        }
+      'warn',
+      'single',
+      {
+        'avoidEscape': true
+      }
     ],
     'semi': [
-        'warn',
-        'always'
+      'warn',
+      'always'
     ],
     'comma-dangle': [
       'warn',
@@ -74,5 +79,6 @@ module.exports = {
       'named': 'never',
       'asyncArrow': 'always'
     }],
+    'react/prop-types': 'off'
   }
 };

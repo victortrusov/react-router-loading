@@ -15,7 +15,7 @@ topbar.config({
   shadowBlur: 0
 });
 
-const Layout = ({ children }: { children: React.ReactNode }) =>
+const Layout = ({ children }) =>
   <Fragment>
     <div style={{ display: 'flex', flexFlow: 'column' }} >
       <Link to='/'>Main</Link>
