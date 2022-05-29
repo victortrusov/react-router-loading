@@ -99,9 +99,7 @@ const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
       {/* current */}
       {
         current.pathname !== LOADING_PATHNAME
-          ? <RouteWrapper key={current.pathname} location={current}>
-            {children}
-          </RouteWrapper>
+          ? <RouteWrapper key={current.pathname} routes={routes} location={current} />
           : LoadingScreen
             ? <LoadingScreen />
             : <DefaultLoadingScreen />
@@ -110,9 +108,7 @@ const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
       {/* hidden next */}
       {
         isPathsDifferent(current, next) &&
-        <RouteWrapper key={next.pathname} location={next} hidden>
-          {children}
-        </RouteWrapper>
+        <RouteWrapper key={next.pathname} routes={routes} location={next} hidden />
       }
     </>,
     [current, next]

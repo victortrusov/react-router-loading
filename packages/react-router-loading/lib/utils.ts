@@ -1,12 +1,12 @@
 import React from 'react';
-import { matchPath, RouteObject, Location } from 'react-router-dom';
+import { matchRoutes, RouteObject, Location } from 'react-router-dom';
 
-export type LoadingRouteObject = RouteObject & {
+export interface LoadingRouteObject extends RouteObject {
   loading?: boolean;
-};
+}
 
 // adapted from original createRoutesFromChildren
-// https://github.com/remix-run/react-router/blob/0f9435a8134b2b5dddfd716a18d17aefe4461fe1/packages/react-router/lib/components.tsx
+// https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/components.tsx
 export function createRoutesFromChildren(children: React.ReactNode): LoadingRouteObject[] {
   const routes: LoadingRouteObject[] = [];
 
@@ -51,23 +51,12 @@ export const isPathsEqual = (first: Location, second: Location) =>
 export const isSearchDifferent = (first: Location, second: Location) =>
   first.search !== second.search;
 
-const findMatchingRoute = (
-  location: Location,
-  routes: LoadingRouteObject[],
-  pathParts: string[] = []
-): LoadingRouteObject | null => {
-  for (const route of routes) {
-    const allParts = [...pathParts, route.path];
-    if (matchPath(location.pathname, allParts.join(''))) {
-      return route;
-    }
-    if (route.children?.length) {
-      return findMatchingRoute(location, route.children, allParts);
-    }
-  }
+export const isLoadable = (location: Location, routes: LoadingRouteObject[]) => {
+  const matches = matchRoutes(routes, location);
 
-  return null;
+  if (!matches || matches.length === 0)
+    return false;
+
+  const lastMatch = matches[matches.length - 1];
+  return (lastMatch.route as LoadingRouteObject).loading;
 };
-
-export const isLoadable = (location: Location, routes: LoadingRouteObject[]) =>
-  !!findMatchingRoute(location, routes)?.loading;

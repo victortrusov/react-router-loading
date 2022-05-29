@@ -23,6 +23,10 @@ const Layout = ({ children }) =>
       <Link to='/page2'>Page 2</Link>
       <br />
       <Link to='/page1WithoutLoading'>Page 1 without loading</Link>
+      <br />
+      <Link to='/subpath'>Nested Main</Link>
+      <Link to='/subpath/page1'>Nested Page 1</Link>
+      <Link to='/subpath/page2'>Nested Page 2</Link>
     </div>
     <hr />
     <article>
@@ -34,16 +38,22 @@ const App = () =>
   <Layout>
     {/* using Routes from react-router-loading */}
     <Routes>
+      <Route path='/' element={<Main />} loading />
+
       {/* func component with state */}
-      <Route path='/page1' element={<Page1 />} loading />
+      <Route path='page1' element={<Page1 />} loading />
 
       {/* same component but without loading prop */}
-      <Route path='/page1WithoutLoading' element={<Page1 />} />
+      <Route path='page1WithoutLoading' element={<Page1 />} />
 
       {/* class component: have to pass loadingContext in it */}
-      <Route path='/page2' element={<Page2 />} loading />
+      <Route path='page2' element={<Page2 />} loading />
 
-      <Route path='/' element={<Main />} loading />
+      {/* works with nested rows */}
+      <Route path='subpath' element={<Main />} loading>
+        <Route path='page1' element={<Page1 />} loading />
+        <Route path='page2' element={<Page2 />} loading />
+      </Route>
     </Routes>
   </Layout>;
 
