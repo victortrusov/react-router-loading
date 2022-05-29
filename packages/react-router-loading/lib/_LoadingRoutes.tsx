@@ -1,6 +1,6 @@
 
 import React, { useState, useContext, useEffect, useMemo, useRef, PropsWithChildren, FC } from 'react';
-import { useLocation, Location } from 'react-router-dom';
+import { useLocation, Location, useNavigationType, NavigationType } from 'react-router-dom';
 import { LoadingContext, LoadingGetterContext } from './LoadingContext';
 import DefaultLoadingScreen from './_DefaultLoadingScreen';
 import { createRoutesFromChildren, isLoadable, isPathsDifferent, isPathsEqual, isSearchDifferent } from './utils';
@@ -9,6 +9,11 @@ import { RouteWrapper } from './_RouteWrapper';
 interface LoadingRoutesProps {
   loadingScreen?: React.ElementType;
   maxLoadingTime?: number;
+}
+
+interface LoadingRoutesState {
+  location: Location;
+  navigationType: NavigationType;
 }
 
 const LOADING_PATHNAME = '__loading';
@@ -21,6 +26,7 @@ const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
 
   // 🪝 Hooks
   const location = useLocation();
+  const navigationType = useNavigationType();
   const loadingContext = useContext(LoadingContext);
   const isCurrentlyLoading = useContext(LoadingGetterContext);
 
@@ -30,30 +36,41 @@ const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
     [children]
   );
 
-  const [current, setCurrent] = useState<Location>(() => {
+  const [current, setCurrent] = useState<LoadingRoutesState>(() => {
     const isFirstPageLoadable = isLoadable(location, routes);
 
     // if first page loadable showing loading screen
-    return isFirstPageLoadable
+    const firstLocation = isFirstPageLoadable
       ? { ...location, pathname: LOADING_PATHNAME }
       : location;
+
+    return {
+      location: firstLocation,
+      navigationType: navigationType
+    };
   });
-  const [next, setNext] = useState<Location>(current);
+  const [next, setNext] = useState<LoadingRoutesState>(current);
 
   const timeout: React.MutableRefObject<NodeJS.Timeout | undefined> = useRef();
 
   // 🔄 Lifecycle
-  // when location changed
+  // when location was changed
   useEffect(() => {
     // if not the same route mount it to start loading
-    if (isPathsDifferent(location, next)) {
+    if (isPathsDifferent(location, next.location)) {
       const isPageLoadable = isLoadable(location, routes);
 
-      setNext({ ...location });
+      setNext({
+        location: { ...location },
+        navigationType
+      });
 
       if (!isPageLoadable) {
         loadingContext.done();
-        setCurrent({ ...location });
+        setCurrent({
+          location: { ...location },
+          navigationType
+        });
       } else {
         if (!isCurrentlyLoading)
           loadingContext.start();
@@ -62,18 +79,21 @@ const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
       }
     }
 
-    // if same as current route stop loading
-    if (isPathsEqual(location, current)) {
+    // if same as the current location stop loading
+    if (isPathsEqual(location, current.location)) {
       loadingContext.done();
 
-      if (isSearchDifferent(location, current))
-        setCurrent({ ...location });
+      if (isSearchDifferent(location, current.location))
+        setCurrent({
+          location: { ...location },
+          navigationType
+        });
     }
   }, [location]);
 
-  // when loading ends
+  // when loading is done
   useEffect(() => {
-    if (!isCurrentlyLoading && isPathsDifferent(current, next))
+    if (!isCurrentlyLoading && isPathsDifferent(current.location, next.location))
       setCurrent(next);
   }, [isCurrentlyLoading]);
 
@@ -85,7 +105,7 @@ const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
         timeout.current = undefined;
       }
 
-      if (isPathsDifferent(current, next)) {
+      if (isPathsDifferent(current.location, next.location)) {
         timeout.current = setTimeout(() => {
           loadingContext.done();
         }, maxLoadingTime);
@@ -98,8 +118,13 @@ const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
     () => <>
       {/* current */}
       {
-        current.pathname !== LOADING_PATHNAME
-          ? <RouteWrapper key={current.pathname} routes={routes} location={current} />
+        current.location.pathname !== LOADING_PATHNAME
+          ? <RouteWrapper
+            key={current.location.pathname}
+            routes={routes}
+            location={current.location}
+            navigationType={current.navigationType}
+          />
           : LoadingScreen
             ? <LoadingScreen />
             : <DefaultLoadingScreen />
@@ -107,8 +132,14 @@ const LoadingRoutes: FC<PropsWithChildren<LoadingRoutesProps>> = ({
 
       {/* hidden next */}
       {
-        isPathsDifferent(current, next) &&
-        <RouteWrapper key={next.pathname} routes={routes} location={next} hidden />
+        isPathsDifferent(current.location, next.location) &&
+        <RouteWrapper
+          key={next.location.pathname}
+          routes={routes}
+          location={next.location}
+          navigationType={next.navigationType}
+          hidden
+        />
       }
     </>,
     [current, next]

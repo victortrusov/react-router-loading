@@ -21,6 +21,7 @@ const Layout = ({ children }) =>
       <Link to='/'>Main</Link>
       <Link to='/page1'>Page 1</Link>
       <Link to='/page2'>Page 2</Link>
+      <Link to='/page2?query=test'>Page 2 with query</Link>
       <br />
       <Link to='/page1WithoutLoading'>Page 1 without loading</Link>
       <br />
