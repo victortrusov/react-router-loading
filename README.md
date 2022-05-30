@@ -2,7 +2,7 @@
 
 Wrapper for `react-router` that allows you to load data before switching the screen  
 
-### ‼️ Version `1.0.0-beta` supports React Router 6 only, please use version `0.x.x` for React Router 5 ‼️
+### ‼️ Version `1.x.x` supports React Router 6 only, please use version `0.x.x` for React Router 5 ‼️
 
 \
 ![](example.gif)
