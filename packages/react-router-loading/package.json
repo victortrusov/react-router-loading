@@ -1,6 +1,6 @@
 {
   "name": "react-router-loading",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "Wrapper for react-router that allows you to load data before switching the screen",
   "author": "Victor Trusov",
   "repository": {
@@ -31,9 +31,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:types": "tsc --declaration --emitDeclarationOnly --allowSyntheticDefaultImports --esModuleInterop --isolatedModules false -jsx react-jsx --outFile dist/index.d.ts lib/index.ts",
     "preview": "vite preview",
-    "publish": "build && build:types && cp -fr ../../README.md . && npm publish"
+    "pre-publish": "yarn build && cp -fr ../../README.md ."
   },
   "peerDependencies": {
     "react": ">=16.8",
@@ -49,7 +48,8 @@
     "react": "^18.1.0",
     "react-router": "^6.3.0",
     "typescript": "^4.6.3",
-    "vite": "^2.9.9"
+    "vite": "^2.9.9",
+    "vite-plugin-dts": "^1.2.0"
   },
   "files": [
     "dist"
