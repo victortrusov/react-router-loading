@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# extra README for npm
+packages/react-router-loading/README.md

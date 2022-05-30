@@ -1,6 +1,6 @@
 {
   "name": "react-router-loading",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "Wrapper for react-router that allows you to load data before switching the screen",
   "author": "Victor Trusov",
   "repository": {
@@ -14,6 +14,8 @@
     "loading",
     "fetch",
     "suspense",
+    "react-router",
+    "react-router-native",
     "react-router-dom",
     "preload",
     "prefetch",
@@ -29,18 +31,16 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "cp -fr ../../README.md . && npm publish"
   },
   "peerDependencies": {
     "react": ">=16.8",
     "react-dom": ">=16.8",
-    "react-router": "6"
+    "react-router-dom": "^6.0.0"
   },
   "dependencies": {
-    "topbar": "^1.0.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-router": "^6.3.0"
+    "topbar": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.36",
@@ -48,6 +48,9 @@
     "@types/react-dom": "^18.0.5",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^1.3.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-router": "^6.3.0",
     "typescript": "^4.6.3",
     "vite": "^2.9.9",
     "vite-plugin-dts": "^1.2.0"
