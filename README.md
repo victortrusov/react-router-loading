@@ -14,9 +14,8 @@ Wrapper for `react-router` that allows you to load data before switching the scr
 |  |  |  |
 | ------------ | ------- | --- |
 | react        | >= 16.8 |     |
-| react-dom    | >= 16.8 |     |
-| react-router | **5**       |  **Package version 0.x.x**  |
-| react-router | **6**       |  **Package version  1.x.x**  |
+| react-router | **^5.0.0** |  **Package version 0.x.x**  |
+| react-router | **^6.0.0** |  **Package version 1.x.x**  |
 
 This package uses `react-router` (`react-router-dom` or `react-router-native`) as main router so you should implement it in your project first.
 

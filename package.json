@@ -3,9 +3,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/react-router-loading",
-      "examples/react-router-5/",
-      "examples/react-router-6/"
+      "packages/*",
+      "examples/*"
     ]
   },
   "devDependencies": {

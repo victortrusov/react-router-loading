@@ -1,31 +1,27 @@
 import { defineConfig } from 'vite';
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
-import dts from 'vite-plugin-dts';
+
+const resolvePath = (str: string) => path.resolve(__dirname, str);
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
-    dts({
-      insertTypesEntry: true,
-    }),
+    react()
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'lib/index.ts'),
+      entry: resolvePath('lib/index.ts'),
       name: 'react-router-loading',
       formats: ['es', 'umd'],
       fileName: (format) => `react-router-loading.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react-router', 'react-router-dom', 'topbar'],
+      external: ['react', 'react-router', 'topbar'],
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM',
           'react-router': 'ReactRouter',
-          'react-router-dom': 'ReactRouterDOM',
           'topbar': 'topbar'
         },
       },

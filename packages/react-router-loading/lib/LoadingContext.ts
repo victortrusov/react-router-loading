@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 // Interface
 
-interface LoadingContextActions {
+export interface LoadingContextActions {
   start: () => void;
   done: () => void;
   restart: () => void;
