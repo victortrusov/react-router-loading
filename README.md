@@ -1,15 +1,13 @@
-# react-router-loading [![npm version](https://badge.fury.io/js/react-router-loading.svg)](https://badge.fury.io/js/react-router-loading)
+# react-router-loading · [![npm version](https://badge.fury.io/js/react-router-loading.svg)](https://badge.fury.io/js/react-router-loading)
 
 Wrapper for `react-router` that allows you to load data before switching the screen  
-
-### ‼️ Version `1.x.x` supports React Router 6 only, please use version `0.x.x` for React Router 5 ‼️
-
 \
-![](example.gif)
-
-<a href="https://codesandbox.io/s/react-router-loading-demo-sguvm" target="_blank">DEMO</a>
+![](example.gif)\
+<a href="https://codesandbox.io/s/react-router-6-loading-demo-q7iv97" target="_blank">DEMO</a> (React Router 6)  
+<a href="https://codesandbox.io/s/react-router-loading-demo-sguvm" target="_blank">DEMO 0.x.x</a> (React Router 5)
 
 ## Requirements
+### ‼️ Version `1.x.x` supports React Router 6 only, please use version `0.x.x` for React Router 5 ‼️
 
 |  |  |  |
 | ------------ | ------- | --- |
