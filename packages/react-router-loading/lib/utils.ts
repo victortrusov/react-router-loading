@@ -1,7 +1,7 @@
 import React from 'react';
 import { matchRoutes, RouteObject, Location } from 'react-router';
 
-export interface LoadingRouteObject extends RouteObject {
+export type LoadingRouteObject = RouteObject & {
   loading?: boolean;
 }
 

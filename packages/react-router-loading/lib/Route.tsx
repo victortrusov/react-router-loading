@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Route as OriginalRoute, RouteProps as OriginalRouteProps } from 'react-router';
 
-interface RouteProps extends OriginalRouteProps {
+type RouteProps = OriginalRouteProps & {
   loading?: boolean;
 }
 
