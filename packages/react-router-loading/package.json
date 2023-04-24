@@ -59,6 +59,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/react-router-loading.es.js",
       "require": "./dist/react-router-loading.umd.js"
     }
